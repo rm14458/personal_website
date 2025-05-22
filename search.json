@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "personal-website",
+    "section": "",
+    "text": "This is my personal website. It is mostly just a stats blog."
+  },
+  {
+    "objectID": "20250417_panel_basics.html",
+    "href": "20250417_panel_basics.html",
+    "title": "Panel Data Basics",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(plm)\nlibrary(broom)\n\nset.seed(1)"
+  },
+  {
+    "objectID": "20250417_panel_basics.html#packages",
+    "href": "20250417_panel_basics.html#packages",
+    "title": "Panel Data Basics",
+    "section": "",
+    "text": "library(tidyverse)\nlibrary(plm)\nlibrary(broom)\n\nset.seed(1)"
+  },
+  {
+    "objectID": "20250417_panel_basics.html#model---random-effects",
+    "href": "20250417_panel_basics.html#model---random-effects",
+    "title": "Panel Data Basics",
+    "section": "Model - Random Effects",
+    "text": "Model - Random Effects\nAssume we have the following panel data model:\n\\[\nY_{it} = \\alpha + X_{it} \\beta + \\eta_i + \\varepsilon_{it}\n\\]\nwhere:\n\n\\(Y_{it}\\) is the dependent variable for observation \\(i\\) at time \\(t\\)\n\n\\(X_{it}\\) is the independent variable\n\n\\(\\alpha\\) is a constant\n\n\\(\\beta\\) is the coefficient of interest\n\n\\(\\eta_i \\sim \\mathcal{N}(0, \\sigma_\\eta^2)\\) is the individual-specific effect\n\n\\(\\varepsilon_{it} \\sim \\mathcal{N}(0, \\sigma_\\varepsilon^2)\\) is the idiosyncratic error term\n\nA key assumption here is that the individual-specific effect is uncorrelated with the covariates: \\[\n\\text{Cov}(X_{it}, \\eta_i) = 0\n\\]"
+  },
+  {
+    "objectID": "20250417_panel_basics.html#simulated-data---random-effects",
+    "href": "20250417_panel_basics.html#simulated-data---random-effects",
+    "title": "Panel Data Basics",
+    "section": "Simulated Data - Random Effects",
+    "text": "Simulated Data - Random Effects\n\n# Parameter Values\nN_values &lt;- c(10, 25, 50, 100, 200, 500, 1000)\nT &lt;- 5\n\nalpha &lt;- 1\nbeta &lt;- 10\n\nsigma_eta &lt;- 1\nsigma_eps &lt;- 1\n\n\n# function to simulate and estimate models\nsimulate_and_estimate &lt;- function(N) {\n  \n  id &lt;- rep(1:N, each = T)\n  time &lt;- rep(1:T, times = N)\n  \n  X &lt;- rnorm(N * T)\n  eta &lt;- rep(rnorm(N, 0, sigma_eta), each = T)\n  eps &lt;- rnorm(N * T, 0, sigma_eps)\n  Y &lt;- alpha + beta * X + eta + eps\n  \n  data &lt;- tibble(id = factor(id), time, X, Y)\n  \n  ols &lt;- lm(Y ~ X, data = data)\n  re  &lt;- plm(Y ~ X, data = data, index = c(\"id\", \"time\"), model = \"random\")\n  \n  bind_rows(\n    tidy(ols, conf.int = TRUE) |&gt; mutate(model = \"OLS\", N = N),\n    tidy(re, conf.int = TRUE)  |&gt; mutate(model = \"Random Effects\", N = N)\n  )\n}\n\n\n# run simulations\nresults &lt;- map_dfr(N_values, simulate_and_estimate)\n\n\nresults %&gt;% \n  filter(term==\"X\") %&gt;% \n  ggplot(aes(x = N, y = estimate, color = model)) +\n  geom_point() +\n  geom_errorbar(\n    aes(ymin = conf.low, ymax = conf.high),\n    width = 0.1\n  ) +\n  scale_x_continuous(trans = \"log10\", breaks = N_values) +\n  geom_hline(yintercept = beta, linetype = \"dashed\", color = \"black\") +\n  labs(\n    title = \"Coefficient Estimates with 95% Confidence Intervals\",\n    subtitle = \"Dashed line indicates true value of β = 10\",\n    y = \"Estimated Coefficient\", x = \"Number of Individuals (N)\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\nresults %&gt;% \n  filter(term==\"(Intercept)\") %&gt;% \n  ggplot(aes(x = N, y = estimate, color = model)) +\n  geom_point() +\n  geom_errorbar(\n    aes(ymin = conf.low, ymax = conf.high),\n    width = 0.1\n  ) +\n  scale_x_continuous(trans = \"log10\", breaks = N_values) +\n  geom_hline(yintercept = alpha, linetype = \"dashed\", color = \"black\") +\n  labs(\n    title = \"Coefficient Estimates with 95% Confidence Intervals\",\n    subtitle = \"Dashed line indicates true value of α = 1\",\n    y = \"Estimated Coefficient\", x = \"Number of Individuals (N)\"\n  ) +\n  theme_minimal()"
+  }
+]
