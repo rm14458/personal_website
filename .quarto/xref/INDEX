@@ -10,5 +10,86 @@
   },
   "20250417_panel_basics.qmd": {
     "20250417_panel_basics.html": "76b52334"
+  },
+  "bayesian_statistics.qmd": {
+    "bayesian_statistics.html": "8b98c126"
+  },
+  "causal_inference.qmd": {
+    "causal_inference.html": "e7bb3a64"
+  },
+  "hierarchical_models.qmd": {
+    "hierarchical_models.html": "b4b7585b"
+  },
+  "linear_models.qmd": {
+    "linear_models.html": "9f91be2e"
+  },
+  "neural_networks.qmd": {
+    "neural_networks.html": "a217aae5"
+  },
+  "panel_data.qmd": {
+    "panel_data.html": "e5151787"
+  },
+  "time_series.qmd": {
+    "time_series.html": "40c556b1"
+  },
+  "panel_basics.qmd": {
+    "panel_basics.html": "6158691f"
+  },
+  "re_vs_eb.qmd": {
+    "re_vs_eb.html": "d0c25365"
+  },
+  "re_vs_fe.qmd": {
+    "re_vs_fe.html": "7e412176"
+  },
+  "20250425_re_vs_eb.qmd": {
+    "20250425_re_vs_eb.html": "b276a68d"
+  },
+  "20250424_re_vs_fe.qmd": {
+    "20250424_re_vs_fe.html": "7775129b"
+  },
+  "20240410_multivariate_regression.ipynb": {
+    "20240410_multivariate_regression.html": "4440bee9"
+  },
+  "20250414_coin_flipping.ipynb": {
+    "20250414_coin_flipping.html": "8ed89bfd"
+  },
+  "20250410_multivariate_regression.ipynb": {
+    "20250410_multivariate_regression.html": "a0fa3b5d"
+  },
+  "1_linear_models/linear_models.qmd": {
+    "linear_models.html": "0e18014e"
+  },
+  "2_bayesian_statistics/20250410_multivariate_regression.ipynb": {
+    "20250410_multivariate_regression.html": "1aad0755"
+  },
+  "2_bayesian_statistics/20250414_coin_flipping.ipynb": {
+    "20250414_coin_flipping.html": "3fe79e37"
+  },
+  "3_hierarchical_models/hierarchical_models.qmd": {
+    "hierarchical_models.html": "177d1137"
+  },
+  "4_time_series/time_series.qmd": {
+    "time_series.html": "a0711600"
+  },
+  "5_panel_data/20250417_panel_basics.qmd": {
+    "20250417_panel_basics.html": "27cafcb1"
+  },
+  "5_panel_data/20250424_re_vs_fe.qmd": {
+    "20250424_re_vs_fe.html": "5549c101"
+  },
+  "5_panel_data/20250425_re_vs_eb.qmd": {
+    "20250425_re_vs_eb.html": "9c9014d5"
+  },
+  "6_causal_inference/causal_inference.qmd": {
+    "causal_inference.html": "efc10c05"
+  },
+  "7_neural_networks/neural_networks.qmd": {
+    "neural_networks.html": "5ae5d624"
+  },
+  "1_linear_models/20250526_ols_consistency.qmd": {
+    "20250526_ols_consistency.html": "77378231"
+  },
+  "1_linear_models/20250527_ols_normality.qmd": {
+    "20250527_ols_normality.html": "ee90d6f6"
   }
 }

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About</title>
+<title>Asymptotic Consistency of OLS – About</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,23 +23,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-fe31d7bd2deb2a321418d01dba375a64.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-fe31d7bd2deb2a321418d01dba375a64.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,8 +68,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -79,7 +108,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">About</span>
     </a>
   </div>
@@ -95,11 +124,11 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-linear-models">    
         <li>
-    <a class="dropdown-item" href="./1_linear_models/20250526_ols_consistency.html">
+    <a class="dropdown-item" href="../1_linear_models/20250526_ols_consistency.html">
  <span class="dropdown-text">OLS Consistency</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./1_linear_models/20250527_ols_normality.html">
+    <a class="dropdown-item" href="../1_linear_models/20250527_ols_normality.html">
  <span class="dropdown-text">OLS Normality</span></a>
   </li>  
     </ul>
@@ -110,21 +139,21 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-bayesian-statistics">    
         <li>
-    <a class="dropdown-item" href="./2_bayesian_statistics/20250414_coin_flipping.html">
+    <a class="dropdown-item" href="../2_bayesian_statistics/20250414_coin_flipping.html">
  <span class="dropdown-text">Basics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./2_bayesian_statistics/20250410_multivariate_regression.html">
+    <a class="dropdown-item" href="../2_bayesian_statistics/20250410_multivariate_regression.html">
  <span class="dropdown-text">Linear Modelling</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="./3_hierarchical_models/hierarchical_models.html"> 
+    <a class="nav-link" href="../3_hierarchical_models/hierarchical_models.html"> 
 <span class="menu-text">Hierarchical Models</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./4_time_series/time_series.html"> 
+    <a class="nav-link" href="../4_time_series/time_series.html"> 
 <span class="menu-text">Time Series</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -133,25 +162,25 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-panel-data">    
         <li>
-    <a class="dropdown-item" href="./5_panel_data/20250417_panel_basics.html">
+    <a class="dropdown-item" href="../5_panel_data/20250417_panel_basics.html">
  <span class="dropdown-text">Panel Data Basics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./5_panel_data/20250424_re_vs_fe.html">
+    <a class="dropdown-item" href="../5_panel_data/20250424_re_vs_fe.html">
  <span class="dropdown-text">Random Effects vs Fxed Effects</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="./5_panel_data/20250425_re_vs_eb.html">
+    <a class="dropdown-item" href="../5_panel_data/20250425_re_vs_eb.html">
  <span class="dropdown-text">Random Effects vs Empirical Bayes</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="./6_causal_inference/causal_inference.html"> 
+    <a class="nav-link" href="../6_causal_inference/causal_inference.html"> 
 <span class="menu-text">Causal Inference</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./7_neural_networks/neural_networks.html"> 
+    <a class="nav-link" href="../7_neural_networks/neural_networks.html"> 
 <span class="menu-text">Neural Networks</span></a>
   </li>  
 </ul>
@@ -169,12 +198,57 @@ ul.task-list li input[type="checkbox"] {
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Asymptotic Consistency of OLS</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<p>My name is Robert Martin. I work as a data scientist and this is my personal website. It is mostly just a collection of useful stats results in different areas.</p>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+.quarto-title .title {
+  text-align: center;
+}
+</style>
+<p><br><br></p>
+<p><strong>Data Generating Process</strong><br> Assume you observe <span class="math inline">\(i = 1, ..., N\)</span> observations. For each observation you observe a scalar dependent variable <span class="math inline">\(y_i\)</span> and <span class="math inline">\(k = 1, ..., K\)</span> independent variables <span class="math inline">\(x_i = (x_{i1}, x_{i2},...,x_{ik})\)</span>. Assume there is a data generating process that links <span class="math inline">\(y_i\)</span> to <span class="math inline">\(x_i\)</span> described by the linear regression model:</p>
+<p><span class="math display">\[\begin{align*}
+y_i &amp;= \beta_1 x_{i1} + \beta_2 x_{i2} + ... + \beta_k x_{ik} + u_i\\
+&amp;= x_i\beta + u_i
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(\beta = (\beta_1, \beta_2, ..., \beta_k)^T\)</span> is the vector of parameters and <span class="math inline">\(u_i\)</span> the error term. We usually choose <span class="math inline">\(x_{i1} = 1\)</span> for all i to include an unknown intercept <span class="math inline">\(\beta_1\)</span>.</p>
+<p>For our theoretical analysis we treat the outcome variable <span class="math inline">\(y_i\)</span> and the regressors <span class="math inline">\(x_i\)</span> as random variables. In an application, <span class="math inline">\(y_i\)</span> and <span class="math inline">\(x_i\)</span> have concrete values that are given to us. These concrete values are realizations of the random variables.</p>
+<p>Assume the following about the data and the data generating process:</p>
+<ul>
+<li><strong>A0</strong> <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are i.i.d and hence so are the errors <span class="math inline">\(u_i\)</span></li>
+<li><strong>A1</strong> <span class="math inline">\(\mathbb{E}(x_i^Tu_i) = 0\)</span></li>
+<li><strong>A2</strong> <span class="math inline">\(\mathbb{E}(x_i^Tx_i)\)</span> exists and rank of <span class="math inline">\(\mathbb{E}(x_i^Tx_i) = K\)</span> i.e.&nbsp;<span class="math inline">\(\mathbb{E}(x_i^Tx_i)\)</span> is invertible</li>
+</ul>
+<p>These assumptions are quite weak and will generally hold. Assumption <strong>A1</strong> implies that <span class="math inline">\(\mathbb{E}(u_i) = 0\)</span> and that <span class="math inline">\(\mathbb{E}(u_ix_i) = 0\)</span>.</p>
+<p><br></p>
+<p><strong>Theorem: Consistency of OLS</strong> <br> Assume the data are i.i.d. draws, and that the linear model and assumptions <strong>A1</strong> and <strong>A2</strong> are satisfied. Then <span class="math inline">\(\hat{\beta} \overset{p}{\to} \beta\)</span> as <span class="math inline">\(n \to \infty\)</span>.</p>
+<p><strong>Proof</strong>: <span class="math display">\[\begin{align}
+\hat{\beta} &amp;= \Big(\sum_1^n x_i^T x_{i}\Big)^{-1} \Big(\sum_1^n x_i^T y_i\Big)\nonumber\\
+\hat{\beta} &amp;= \Big(\sum_1^n x_i^T x_{i}\Big)^{-1} \Big(\sum_1^n x_i^T x_i\Big)\beta + \Big(\sum_1^n x_i^T x_{i}\Big)^{-1}\Big(\sum_1^n x_i^T u_i\Big)\nonumber\\
+\hat{\beta} &amp;= \beta + \Big(\sum_1^n x_i^T x_{i}\Big)^{-1}\Big(\sum_1^n x_i^T u_i\Big)\nonumber\\
+\hat{\beta} &amp;= \beta + \Big(\frac{1}{n}\sum_1^n x_i^T x_{i}\Big)^{-1}\Big(\frac{1}{n}\sum_1^n x_i^T u_i\Big)\nonumber\\
+\hat{\beta} &amp;\overset{p}{\to} \beta\nonumber \\\nonumber\\\nonumber
+\end{align}\]</span></p>
+<p>Given that <span class="math display">\[ \frac{1}{n}\sum_1^n x_i^T x_{i} \overset{p}{\to} \mathbb{E}[x_i^Tx_i] \]</span> <span class="math display">\[ \frac{1}{n}\sum_1^n x_i^T u_i \overset{p}{\to} \mathbb{E}[x_i^Tu_i] = 0 \]</span> by the WLLN.</p>
 
 
 

@@ -1,0 +1,614 @@
+---
+title: "Random Effects vs Empirical Bayes"
+format: html
+execute:
+  warning: false
+---
+
+<style>
+.quarto-title .title {
+  text-align: center;
+}
+</style>
+
+<br><br>
+
+## Packages
+
+```{r}
+
+library(tidyverse)
+library(lme4)
+library(knitr)
+
+```
+
+
+<br>
+
+
+## Introduction
+
+We perform a monte carlo simulation to compare the forecasting performance of different estimators on dynamic panel data allowing for observation-level heterogeneity.
+
+
+<br>
+
+
+## Data Simulation
+
+We simulate panel data from an AR(1) with an intercept. The data generating process is taken from Section 6.1 of Pesaran et al (2024) and is is defined as:
+
+$$
+y_{it} = \alpha_i + \beta_i y_{i,t-1} + \varepsilon_{it}
+$$
+for each observation $i$ and each time period $t$.
+
+We allow for the possibility of different intercepts for each observation:
+
+$$
+\alpha_i \sim \mathcal{N}(\alpha_{0i}, \sigma^2_{\alpha})
+$$
+
+We allow for the possibility of different slopes for each observation:
+
+$$
+\beta_i = \beta_0 + \eta_{i\beta} \qquad \eta_{i\beta} \sim U(-a_{\beta}/2, a_{\beta}/2)
+$$
+
+We allow for observation-specific heteroskedasticity:
+
+$$
+\varepsilon_{it} = \sigma_i \cdot \frac{z_{it}^2 - 1}{\sqrt{2}} \qquad z_{it} \sim \mathcal{N}(0, 1) \qquad \sigma_i^2 \sim 0.5 + 0.5 \cdot \chi^2_1
+$$
+
+The initial value for each observation is drawn from the stationary distribution of the process:
+
+$$
+y_{i1} \sim \mathcal{N}\left( \frac{\alpha}{1 - \beta}, \frac{\sigma^2}{1 - \beta^2} \right)
+$$
+
+```{r}
+
+simulate_panel_data <- function(
+    N = 50, T = 20, sigma2_alpha = 0, a_beta = 0, alpha = 1, beta = 0.8
+  ) {
+
+  sim_data <- tibble()
+
+  for (i in 1:N) {
+
+    # draw observation-specific beta_i and alpha_i
+    beta_i <- beta + runif(1, min = -a_beta / 2, max = a_beta / 2)
+    alpha_i <- alpha + rnorm(1, mean = 0, sd = sqrt(sigma2_alpha))
+
+    # draw sigma_i^2 from 0.5 + 0.5 * chi-squared(1)
+    sigma2_i <- 0.5 + 0.5 * rchisq(1, df = 1)
+    sigma_i <- sqrt(sigma2_i)
+
+    # simulate data for T+1 periods
+    y <- numeric(T + 1)
+
+    # start at stationary distribution
+    y[1] <- rnorm(1, mean=alpha_i/(1-beta_i), sd=sigma_i/sqrt(1-beta_i^2))
+
+    # simulate remaining values
+    for (t in 2:(T + 1)) {
+
+      # draw standard normal z_it
+      z_it <- rnorm(1, mean = 0, sd = 1)
+
+      # error term
+      epsilon_it <- sigma_i * (z_it^2 - 1) / sqrt(2)
+
+      # next value
+      y[t] <- alpha_i + beta_i * y[t - 1] + epsilon_it
+
+    }
+
+    # combine data together into tibble
+    df <- tibble(
+      id = i,
+      alpha=alpha_i,
+      beta=beta_i,
+      sigma=sigma_i,
+      t = 1:(T + 1),
+      y = y,
+      lag_y = dplyr::lag(y)
+    )
+
+    sim_data <- bind_rows(sim_data, df)
+  }
+
+  list(
+    estimation_data = sim_data %>% filter(t <= T),
+    forecast_data = sim_data %>% filter(t == T + 1)
+  )
+} 
+
+```
+
+
+<br>
+
+
+## Model Estimation
+
+We simulate $T + 1$ periods for each observation $i = 1, ..., N$. For each simulated panel:
+
+- The first $T$ periods are used for model estimation
+- The final period $t = T+1$ is used for one-step-ahead forecast evaluation
+
+We estimate four models, each differing in how it handles observation-level heterogeneity in the data. The goal is to evaluate how different assumptions about heterogeneity and information pooling affect forecast accuracy. The models are:
+
+### 1. **Observation-Specific OLS**
+
+A separate ordinary least squares (OLS) regression is estimated for each observation $i$, using only that observation's time series data:
+
+$$
+y_{it} = \alpha_i + \beta_i y_{i,t-1} + \varepsilon_{it}
+$$
+
+- **Pros**: Fully flexible—each observation has its own intercept and slope.  
+- **Cons**: Very noisy, especially with short time series (small $T$); no pooling across observations.  
+- **Role**: Used as the baseline for comparing forecast performance.
+
+### 2. **Pooled OLS**
+
+A single regression is estimated across all observations, assuming homogeneous parameters:
+
+$$
+y_{it} = \alpha + \beta y_{i,t-1} + \varepsilon_{it}
+$$
+
+- **Pros**: Very efficient; low variance due to maximum pooling.  
+- **Cons**: Ignores heterogeneity; biased if observation effects are substantial.  
+
+### 3. **Random Effects (RE) Model**
+
+We estimate a **random coefficients model** using mixed-effects regression:
+
+$$
+y_{it} = (\alpha + \eta_i) + (\beta + \zeta_i) y_{i,t-1} + \varepsilon_{it}
+$$
+
+with
+
+$$
+\begin{bmatrix} \eta_i \\ \zeta_i \end{bmatrix} \sim \mathcal{N}(0, \Omega), \quad \varepsilon_{it} \sim \mathcal{N}(0, \sigma^2)
+$$
+
+- **Pros**: Balances bias and variance trade-off by partially pooling toward a common mean.  
+- **Cons**: Relies on distributional assumptions (e.g., normality of random effects); estimation can be complex with small samples.  
+
+### 4. **Empirical Bayes (EB)**
+
+This model explicitly applies **Empirical Bayes shrinkage** to individual-specific OLS estimates. It assumes:
+
+- The individual-level parameters $\theta_i = (\alpha_i, \beta_i)'$ follow a multivariate normal prior:
+
+$$
+\theta_i \sim \mathcal{N}(\bar{\theta}, \Omega)
+$$
+
+- The posterior mean (BLUP) is used as the shrinkage estimator:
+
+$$
+\hat{\theta}_i^{EB} = \left(W_i'W_i / \sigma_i^2 + \Omega^{-1} \right)^{-1} \left(W_i'y_i / \sigma_i^2 + \Omega^{-1} \bar{\theta} \right)
+$$
+
+- **Pros**: Data-adaptive shrinkage toward a cross-sectional prior; flexible and often robust to overfitting.  
+- **Cons**: Requires variance estimates and assumptions about the distribution of heterogeneity.  
+
+Together, these models form a spectrum of pooling strategies:
+
+| Model               | Degree of Pooling        | Handles Heterogeneity?      | Risk of Overfitting               |
+|---------------------|---------------------------|------------------------------|-----------------------------------|
+| Individual OLS      | None                      | Fully                        | High (esp. with low $T$)          |
+| Pooled OLS          | Full                      | Ignores                      | Low                               |
+| Random Effects      | Partial                   | Yes (via random effects)     | Medium                            |
+| Empirical Bayes     | Data-driven shrinkage     | Yes (via shrinkage)          | Medium                            |
+
+
+This framework allows us to test the **forecast trade-off** between flexibility (observation-specific fit) and efficiency (pooling), with forecast accuracy at $T + 1$ serving as the performance metric.
+
+
+<br>
+
+
+## Forecast Evaluation
+
+Forecasts are computed for period $T+1$, and mean squared forecast errors (MSFEs) are calculated by comparing predicted values to the actual simulated outcome.
+
+Let $\hat{y}_{i,T+1}^{(m)}$ denote the forecast for observation $i$ using method $m \in \{\text{observation}, \text{pooled}, \text{re}, \text{be}\}$. Then the MSFE for method $m$ is:
+
+$$
+\text{MSFE}^{(m)} = \frac{1}{N} \sum_{i=1}^N \left( \hat{y}_{i,T+1}^{(m)} - y_{i,T+1} \right)^2
+$$
+
+To assess the relative performance of the panel methods, we compute **relative MSFEs** by dividing each method’s MSFE by that of the observation-specific forecasts:
+
+$$
+\text{Relative MSFE}^{(m)} = \frac{\text{MSFE}^{(m)}}{\text{MSFE}^{(\text{observation})}}, \quad m \in \{\text{pooled}, \text{re}, \text{be} \}
+$$
+
+This benchmarking helps identify how much more or less accurate the panel estimators are relative to the baseline model.
+
+```{r}
+
+run_simulation <- function(
+    N = 50, T = 20, sigma2_alpha = 0, a_beta = 0, alpha = 1, beta = 0.8
+  ) {
+
+  # simulate data for chosen values of N and T
+  data_list <- simulate_panel_data(
+    N = N, T = T, sigma2_alpha = sigma2_alpha, a_beta = a_beta, 
+    alpha = alpha, beta = beta
+  )
+
+  # retreieve estimation data
+  estimation_data <- data_list$estimation_data %>% 
+    drop_na(lag_y) %>%
+    mutate(id = factor(id))
+
+  # retrieve forecast data
+  forecast_data <- data_list$forecast_data %>% 
+    mutate(id = factor(id, levels = levels(estimation_data$id)))
+
+  
+  ### OBSERVATION-SPECIFIC MODELS ###
+  forecast_data$yhat_individual <- NA
+  
+  # list to store estimated intercept and slope coefficient
+  theta_individual <- list()
+  
+  # vector to store estimated error variance
+  sigma2_individual <- numeric(0)
+
+  for (i in unique(forecast_data$id)) {
+    
+    # data relevant to this observation
+    est_i <- estimation_data %>% 
+      filter(id == i)
+    
+    # check sufficient data
+    if (nrow(est_i) >= 2) {
+      
+      # estimate individual specific ols
+      model_i <- lm(y ~ lag_y, data = est_i)
+      
+      # store coefficients
+      theta_individual[[i]] <- coef(model_i)
+      
+      # store estimated variance
+      sigma2_individual[i] <- mean(resid(model_i)^2)
+      
+      # make one step ahead forecast
+      forecast_data$yhat_individual[forecast_data$id == i] <- 
+        predict(model_i, newdata = forecast_data %>% filter(id == i))
+      
+    } else {
+      
+      beta_individual[[i]] <- c(NA, NA)
+      sigma2_individual[i] <- NA
+      
+    }
+  }
+
+  
+  ### POOLING MODEL ###
+  pooled_model <- lm(y ~ lag_y, data = estimation_data)
+  forecast_data$yhat_pooled <- predict(pooled_model, newdata = forecast_data)
+  
+  # Extract PR² from pooled model
+  pr2 <- summary(pooled_model)$r.squared
+  
+  
+  ### RANDOM EFFECTS MODEL ###
+  re_model <- lmer(y ~ lag_y + (lag_y | id), data=estimation_data, REML=TRUE)
+  forecast_data$yhat_re <- predict(re_model, newdata = forecast_data)
+  
+  
+  ### EMPIRICAL BAYES MODEL ###
+  
+  # matrix of estimated coefficients
+  theta_mat <- do.call(rbind, theta_individual)
+  
+  # ids for which we have estimates
+  valid_ids <- which(!is.na(theta_mat[,1]))
+  
+  # mean of intercept and slope coefficients
+  theta_bar <- colMeans(theta_mat[valid_ids, , drop = FALSE])
+  
+  # estimated covariance matrix
+  Omega_hat <- cov(theta_mat[valid_ids, , drop = FALSE])
+
+  forecast_data$yhat_eb <- NA
+  
+  for (i in valid_ids) {
+
+    # matrix of predictors
+    W_i <- model.matrix(y ~ lag_y, data = estimation_data %>% filter(id == i))
+
+    # matrix of dependenet variables
+    y_i <- estimation_data %>% filter(id == i) %>% pull(y)
+
+    # estimated variance for observation i
+    sigma2_i <- sigma2_individual[i]
+
+    # naive bayes estimator
+    A <- solve(t(W_i) %*% W_i / sigma2_i + solve(Omega_hat))
+    b <- t(W_i) %*% y_i / sigma2_i + solve(Omega_hat) %*% theta_bar
+    theta_eb <- A %*% b
+
+    # regressors for individual i
+    x_T1 <- model.matrix(~ lag_y, data = forecast_data %>% filter(id == i))
+    
+    # make forecast
+    forecast_data$yhat_eb[forecast_data$id == i] <- as.numeric(x_T1 %*% theta_eb)
+    
+  }
+  
+
+  # Compute RMSFEs
+  results <- forecast_data %>%
+    summarise( # Compute MSFEs
+      individual = mean((yhat_individual - y)^2, na.rm = TRUE),
+      pooled = mean((yhat_pooled - y)^2, na.rm = TRUE),
+      re = mean((yhat_re - y)^2, na.rm = TRUE),
+      eb = mean((yhat_eb - y)^2, na.rm = TRUE)
+    ) %>%
+    mutate( # Compute RELATIVE MSFEs
+      pooled = pooled / individual,
+      re = re / individual,
+      eb = eb / individual
+    ) %>%
+    # drop individual, because we are expressing relative to it
+    select(pooled, re, eb) %>%
+    mutate(pr2 = pr2) # add pr2 from pooled regressions
+
+}
+
+```
+
+
+<br>
+
+
+## Simulation
+
+We conduct a grid simulation to evaluate the forecast performance of each model under a range of data-generating processes (DGPs). The simulation explores how estimator performance varies with:
+
+- **$T$**: The number of time periods per observation
+- **$\sigma^2_\alpha$**: The variance of observation-level intercept heterogeneity
+- **$a_\beta$**: The degree of heterogeneity in observation-specific slopes
+
+```{r}
+
+run_grid_simulation <- function(
+    B, N_vals, T_vals, sigma2_alpha_vals, a_beta_vals, alpha, beta
+  ) {
+  
+  grid <- expand_grid(
+    N = N_vals, T = T_vals, sigma2_alpha = sigma2_alpha_vals, 
+    a_beta = a_beta_vals
+  )
+  
+  results_all <- grid %>%
+    mutate(
+      result = pmap(list(N, T, a_beta, sigma2_alpha), function(Ni, Ti, ab, sa) {
+        message(sprintf("Running simulation for N = %d, T = %d, a_beta = %.2f, 
+                        sigma2_alpha = %.2f", Ni, Ti, ab, sa))
+        sims <- map_dfr(1:B, ~run_simulation(
+          N = Ni, T = Ti, sigma2_alpha = sa, a_beta = ab, alpha = alpha, 
+          beta = beta))
+        sims %>% summarise(across(everything(), mean))
+      })
+    ) %>%
+    unnest(result)
+
+  return(results_all)
+  
+}
+
+```
+
+```{r}
+
+# set random seed
+set.seed(1)
+
+# parameters
+B <- 5
+N_vals <- c(100)
+T_vals <- c(20, 50)
+sigma2_alpha_vals <- c(0, 0.5, 1)
+a_beta_vals <- c(0, 0.25, 0.5)
+alpha <- 1
+beta <- 0.5
+
+```
+
+```{r, warning = FALSE}
+
+grid_results <- run_grid_simulation(
+  B = B,
+  N_vals = N_vals,
+  T_vals = T_vals,
+  sigma2_alpha_vals = sigma2_alpha_vals,
+  a_beta_vals = a_beta_vals,
+  alpha = alpha,
+  beta = beta
+)
+
+```
+
+
+<br>
+
+
+## Results Interpretation
+
+The simulation results reveal several clear patterns regarding the relative forecast performance of the different estimators.
+
+### Homogeneous Case: No Heterogeneity ($\sigma^2_\alpha = 0$, $a_\beta = 0$)
+
+When the data-generating process is fully homogeneous—i.e., all observations share the same intercept and slope—the **pooled OLS model** should deliver the best forecast performance as pooling maximizes statistical efficiency when the true model is the same across observations.
+
+In this setting, all three panel estimators—**pooled**, **random effects (RE)**, and **empirical Bayes (EB)**—consistently outperform the **observation-specific OLS model**. The observation-specific model overfits due to the small sample size per observation and fails to take advantage of shared structure across observations.
+
+```{r}
+
+# homogeneous case
+results <- grid_results %>%
+  filter(sigma2_alpha==0 & a_beta==0) %>% 
+  mutate(across(c(pooled, re, eb, pr2), ~ round(., 3)))
+
+```
+
+```{r}
+
+kableExtra::kbl(
+  results,
+  col.names = c(
+    'N', 
+    'T', 
+    'σ²<sub>α</sub>',
+    'a<sub>β</sub>',
+    'Pooled', 
+    'RE', 
+    'EB', 
+    'PR²'
+  ),
+  caption = 'Homogeneous Case',
+  escape = FALSE
+  ) %>%
+  kableExtra::kable_styling()
+
+```
+
+
+
+### Medium Heterogeneity ($\sigma^2_\alpha > 0$, $a_\beta > 0$)
+
+When moderate heterogeneity is introduced into both intercepts and slopes, the performance of the **pooled model deteriorates**, as it no longer correctly reflects the data structure. However, the **RE** and **EB** estimators adapt to the heterogeneity through partial pooling and **outperform the observation-specific model**.
+
+This reflects the value of shrinkage: RE and EB methods reduce forecast variance without introducing substantial bias, especially when $T$ is small.
+
+```{r}
+
+# medium heterogeneity
+results <-grid_results %>%
+  filter(sigma2_alpha==0.5 & a_beta==0.25) %>% 
+  mutate(across(c(pooled, re, eb, pr2), ~ round(., 3)))
+
+```
+
+```{r}
+
+kableExtra::kbl(
+  results,
+  col.names = c(
+    'N', 
+    'T', 
+    'σ²<sub>α</sub>',
+    'a<sub>β</sub>',
+    'Pooled', 
+    'RE', 
+    'EB', 
+    'PR²'
+  ),
+  caption = 'Medium Heterogeneity',
+  escape = FALSE
+  ) %>% 
+  kableExtra::kable_styling()
+
+```
+
+
+### High Heterogeneity ($\sigma^2_\alpha = 1$, $a_\beta = 0.5$)
+
+Even in the presence of substantial heterogeneity, the **RE** and **EB** models maintain a forecast advantage over the observation-specific model. While the benefit from pooling is reduced compared to the homogeneous case, the **shrinkage estimators still provide a better bias–variance tradeoff**, particularly in short panels.
+
+Notably, the pooled model performs **poorly** in this case, as it imposes a strong (and incorrect) homogeneity assumption.
+
+```{r}
+
+# high heterogeneity
+ results <- grid_results %>%
+  filter(sigma2_alpha==1 & a_beta==0.5) %>% 
+  mutate(across(c(pooled, re, eb, pr2), ~ round(., 3)))
+
+```
+
+```{r}
+
+kableExtra::kbl(
+  results,
+  col.names = c(
+    'N', 
+    'T', 
+    'σ²<sub>α</sub>',
+    'a<sub>β</sub>',
+    'Pooled', 
+    'RE', 
+    'EB', 
+    'PR²'
+  ),
+  caption = 'High Heterogeneity',
+  escape = FALSE
+  ) %>% 
+  kableExtra::kable_styling()
+
+```
+
+### Role of Time Series Length ($T$)
+
+Across all levels of heterogeneity, the relative advantage of RE and EB models is **most pronounced when $T = 20$**. With limited time series data, the observation-specific OLS estimates are noisy and overfit the training data. In this setting, **partial pooling provides substantial forecast gains**.
+
+As $T$ increases to $T = 50$, the observation-specific estimates become more stable, and the benefits of shrinkage diminish. This is intuitive: with longer time series, each observation’s model can be estimated more reliably, reducing the need to borrow strength from others.
+
+
+<br>
+
+
+## Summary
+
+Key results:
+
+- **Pooling is optimal under homogeneity**, with pooled OLS performing best
+- **RE and EB estimators provide robust performance across a range of heterogeneous DGPs**, outperforming observation-sepcific OLS in all scenarios considered
+- **Shrinkage methods are most beneficial in short panels (small $T$)**, where observation-sepcific models are noisy
+- **As $T$ grows**, the gap between methods narrows, validating the consistency of observation-specific estimators in long panels
+
+These results highlight the practical importance of partial pooling methods like RE and EB in empirical applications where panel length is short and individual heterogeneity is likely.
+
+```{r}
+
+# all results
+results <- grid_results %>% 
+  mutate(across(c(pooled, re, eb, pr2), ~ round(., 3)))
+
+```
+
+```{r}
+
+kableExtra::kbl(
+  results,
+  col.names = c(
+    'N', 
+    'T', 
+    'σ²<sub>α</sub>',
+    'a<sub>β</sub>',
+    'Pooled', 
+    'RE', 
+    'EB', 
+    'PR²'
+  ),
+  caption = 'All Cases',
+  escape = FALSE
+  ) %>% 
+  kableExtra::kable_styling()
+
+```
+

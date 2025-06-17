@@ -1,0 +1,221 @@
+---
+title: "Random Effects vs Fixed Effects"
+format: html
+execute: 
+  warning: false
+---
+
+
+<style>
+.quarto-title .title {
+  text-align: center;
+}
+</style>
+
+<br><br>
+
+## Packages
+
+```{r}
+
+library(tidyverse)
+library(plm)
+library(broom)
+
+```
+
+
+<br>
+
+
+## Introduction
+
+We conduct a Monte Carlo simulation to compare the performance of OLS, Random Effects, and Fixed Effects estimators in a panel data setting where the unobserved observation-specific effect is correlated with the covariate of interest. This setting violates the key assumption behind the Random Effects estimator, and we demonstrate how this affects bias and precision.
+
+
+<br>
+
+
+## Model - Fixed Effects
+Assume we have the following panel data model:
+
+$$
+Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
+$$
+
+where:
+
+- $Y_{it}$ is the dependent variable for observation $i$ at time $t$  
+- $X_{it}$ is the independent variable  
+- $\alpha$ is a constant  
+- $\beta$ is the coefficient we want to estimate  
+- $\eta_i \sim \mathcal{N}(0, \sigma_\eta^2)$ is an unobserved observation-specific effect
+- $\varepsilon_{it} \sim \mathcal{N}(0, \sigma_\varepsilon^2)$ is the idiosyncratic error term
+
+In this simulation, we violate the Random Effects assumption by allowing:
+$$
+\text{Cov}(X_{it}, \eta_i) \neq 0
+$$
+
+Specifically, we generate $X_{it}$ as a function of $\eta_i$ to induce correlation. This ensures that both OLS and RE estimators will be biased. In contrast, the Fixed Effects estimator removes $\eta_i$ via within-transformation, yielding consistent estimates of $\beta$.
+
+
+<br>
+
+
+## Simulate Data
+
+We simulate panel data under the assumption that the data-generating process includes a fixed effect that is correlated with the covariate. Specifically:
+
+- We vary the number of observations $N$ and hold the number of time periods $T$ fixed
+- The individual-specific effect $\eta_i$ is drawn from a normal distribution and held constant across time
+- The covariate $X_{it}$ is generated as a function of $\eta_i$, inducing correlation between $X_{it}$ and the unobserved effect
+- The idiosyncratic error term $\varepsilon_{it}$ is iid normal with mean 0 and variance 1
+
+The true parameter values are:
+
+- $\alpha = 1$
+- $\beta = 10$
+
+This setup mimics a balanced panel where the regressor is endogenous with respect to the observation-specific effect, violating the assumptions behind the Random Effects estimator. As a result, OLS and RE will be biased, and only the Fixed Effects estimator will be consistent.
+
+The simulation function:
+
+- Simulates data for a given $N$
+- Estimates OLS, Random Effects, and Fixed Effects models
+- Returns coefficient estimates and confidence intervals
+
+```{r}
+
+# random seed
+set.seed(1)
+
+# Parameter Values
+N_values <- c(10, 25, 50, 100, 200, 500, 1000)
+T <- 5
+
+alpha <- 1
+beta <- 10
+
+sigma_eta <- 1
+sigma_eps <- 1
+
+```
+
+```{r}
+
+# Function to simulate and estimate models
+simulate_and_estimate <- function(N) {
+  
+  id <- rep(1:N, each = T)
+  time <- rep(1:T, times = N)
+  
+  eta_i <- rnorm(N, 0, sigma_eta)
+  eta <- rep(eta_i, each = T)
+  
+  # Induce correlation: X depends on eta_i
+  X <- rep(0, N * T)
+  for (i in 1:N) {
+    X[((i - 1) * T + 1):(i * T)] <- 0.5 * eta_i[i] + rnorm(T)
+  }
+  
+  eps <- rnorm(N * T, 0, sigma_eps)
+  Y <- alpha + beta * X + eta + eps
+  
+  data <- tibble(id = factor(id), time, X, Y)
+  
+  ols <- lm(Y ~ X, data = data)
+  re  <- plm(Y ~ X, data = data, index = c("id", "time"), model = "random")
+  fe  <- plm(Y ~ X, data = data, index = c("id", "time"), model = "within")
+  
+  bind_rows(
+    tidy(ols, conf.int = TRUE) |> mutate(model = "OLS", N = N),
+    tidy(re, conf.int = TRUE)  |> mutate(model = "Random Effects", N = N),
+    tidy(fe, conf.int = TRUE)  |> mutate(model = "Fixed Effects", N = N)
+  )
+
+}
+
+```
+
+```{r}
+
+# run simulations
+results <- map_dfr(N_values, simulate_and_estimate)
+
+```
+
+
+<br>
+
+
+## Results
+
+The plot below shows the estimated coefficient on $X$ across different values of $N$. The dashed horizontal line marks the true value $\beta = 10$.
+
+Key points:
+
+- Only the Fixed Effects estimator is unbiased: its estimates center around the true value across all $N$
+- OLS and Random Effects are biased: they consistently overestimate $\beta$ due to the positive correlation between $X_{it}$ and $\eta_i$
+- As $N$ increases, the bias in OLS and RE does not vanish
+- The Fixed Effects estimator becomes more precise (narrower confidence intervals) as $N$ increases, as expected due to larger sample size
+
+This simulation confirms that when $\eta_i$ is correlated with $X_{it}$, only the Fixed Effects estimator yields consistent estimates. OLS and RE fail because they attribute part of the variation in $Y_{it}$ caused by $\eta_i$ to $X_{it}$.
+
+```{r}
+
+results %>% 
+  filter(term == "X") %>% 
+  ggplot(aes(x = N, y = estimate, color = model)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.1) +
+  scale_x_continuous(trans = "log10", breaks = N_values) +
+  geom_hline(yintercept = beta, linetype = "dashed", color = "black") +
+  labs(
+    title = "Coefficient Estimates for X",
+    subtitle = "Dashed line shows true β = 10. Only FE gives unbiased estimate.",
+    y = "Estimated Coefficient", x = "Number of Individuals (N)"
+  ) +
+  theme_minimal()
+
+```
+
+The plot below shows the estimated intercept $\alpha$ from the OLS and Random Effects models. The true value is $\alpha = 1$ (dashed line). The Fixed Effects model is excluded because it does not estimate the overall intercept — it only recovers within-observation deviations from observation means.
+
+Key points:
+
+- Both OLS and RE recover $\alpha$ with similar levels of bias and precision
+- As $N$ increases, the estimates of $\alpha$ become more precise for both models
+- The Fixed Effects estimator intentionally omits $\alpha$ because the within transformation sweeps it out
+
+This illustrates that while FE is superior for estimating slope coefficients under correlation between $\eta_i$ and $X_{it}$, it does not provide information about the level of $\alpha$ or other time-invariant effects.
+
+```{r}
+
+results %>% 
+  filter(term == "(Intercept)", model != "Fixed Effects") %>% 
+  ggplot(aes(x = N, y = estimate, color = model)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.1) +
+  scale_x_continuous(trans = "log10", breaks = N_values) +
+  geom_hline(yintercept = alpha, linetype = "dashed", color = "black") +
+  labs(
+    title = "Intercept Estimates (α)",
+    subtitle = "Dashed line shows true α = 1. FE does not estimate intercept.",
+    y = "Estimated Intercept", x = "Number of Individuals (N)"
+  ) +
+  theme_minimal()
+
+```
+
+
+<br>
+
+
+## Summary
+
+- When observation-specific effects are correlated with regressors, the Fixed Effects estimator is consistent, while OLS and Random Effects are biased
+- Random Effects gains in efficiency only apply if the unobserved effect is uncorrelated with covariates — that assumption is violated here
+- Fixed Effects does not estimate the intercept — this is a feature, not a bug: it focuses on within-observation variation
+- As sample size increases, FE estimates become more precise, while OLS and RE remain biased
+

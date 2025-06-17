@@ -1,0 +1,222 @@
+---
+title: "Panel Data Basics"
+format: html
+execute: 
+  warning: false
+---
+
+<style>
+.quarto-title .title {
+  text-align: center;
+}
+</style>
+
+<br><br>
+
+## Packages
+
+```{r}
+
+library(tidyverse)
+library(plm)
+library(broom)
+
+```
+
+
+<br>
+
+
+## Introduction
+
+We perform a Monte Carlo simulation to demonstrate the efficiency of the random effects estimator compared to the standard OLS estimator in a panel data setting with a random effects error structure.
+
+The goal is to show how the OLS estimator, which ignores the panel structure, can be inefficient when there are observation-specific unobserved effects that are uncorrelated with the covariates. In contrast, the random effects estimator exploits this structure to improve estimation precision.
+
+
+<br>
+
+
+## Model - Random Effects
+Assume we have the following panel data model:
+
+$$
+Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
+$$
+
+where:
+
+- $Y_{it}$ is the dependent variable for observation $i$ at time $t$  
+- $X_{it}$ is the independent variable  
+- $\alpha$ is a constant  
+- $\beta$ is the coefficient of interest  
+- $\eta_i \sim \mathcal{N}(0, \sigma_\eta^2)$ is the observation-specific effect  
+- $\varepsilon_{it} \sim \mathcal{N}(0, \sigma_\varepsilon^2)$ is the idiosyncratic error term
+
+A key assumption here is that the observation-specific effect is uncorrelated with the covariates:
+$$
+\text{Cov}(X_{it}, \eta_i) = 0
+$$
+
+This is the identifying assumption that justifies the use of the random effects estimator. It implies that $\eta_i$ can be treated as part of the error structure and estimated efficiently using quasi-demeaning. If this assumption were violated, random effects would be biased and inconsistent, and a fixed effects estimator would be preferred.
+
+
+<br>
+
+
+## Simulate Data
+
+We simulate panel data under the assumption that the data-generating process includes a random effect. Specifically:
+
+- We vary the number of individuals $N$ and hold the number of time periods $T$ fixed
+- The covariate $X_{it}$ is iid normal
+- The observation-specific effect $\eta_{i}$ and the idiosyncratic error term $\epsilon_{it}$ are both normal with mean 0 and variance 1
+
+The true parameter values are:
+
+- $\alpha = 1$
+- $\beta = 10$
+
+This setup mimics a typical balanced panel with strictly exogenous covariates and a classical random effects structure.
+
+The simulation function:
+
+- Simulates data for a given $N$
+- Estimates both OLS and Random Effects models
+- Returns coefficient estimates and confidence intervals
+
+```{r}
+
+# set random seed
+set.seed(1)
+
+# Parameter Values
+N_values <- c(10, 25, 50, 100, 200, 500, 1000)
+T <- 5
+
+alpha <- 1
+beta <- 10
+
+sigma_eta <- 1
+sigma_eps <- 1
+
+```
+
+```{r}
+
+# function to simulate and estimate models
+simulate_and_estimate <- function(N) {
+  
+  id <- rep(1:N, each = T)
+  time <- rep(1:T, times = N)
+  
+  X <- rnorm(N * T)
+  eta <- rep(rnorm(N, 0, sigma_eta), each = T)
+  eps <- rnorm(N * T, 0, sigma_eps)
+  Y <- alpha + beta * X + eta + eps
+  
+  data <- tibble(id = factor(id), time, X, Y)
+  
+  ols <- lm(Y ~ X, data = data)
+  re  <- plm(Y ~ X, data = data, index = c("id", "time"), model = "random")
+  
+  bind_rows(
+    tidy(ols, conf.int = TRUE) |> mutate(model = "OLS", N = N),
+    tidy(re, conf.int = TRUE)  |> mutate(model = "Random Effects", N = N)
+  )
+}
+
+
+```
+
+```{r}
+
+# run simulations
+results <- map_dfr(N_values, simulate_and_estimate)
+
+```
+
+
+<br>
+
+
+## Results
+
+OLS ignores the panel structure entirely and treats all $N \times T$ observations as independent.
+
+Random Effects correctly accounts for the within-observation correlation introduced by $\eta_i$, improving efficiency by reducing variance in the estimated coefficients.
+
+The figure below plots the estimated coefficient on $X$ across different values of $N$. The dashed line marks the true value $\beta = 10$.
+
+Key points:
+
+- Both OLS and Random Effects are unbiased (on average they estimate the true coefficient)
+- However, Random Effects is more efficient: its confidence intervals are narrower, especially at low $N$
+- As $N$ increases, the precision of both estimators improves, but Random Effects consistently dominates OLS in terms of standard error
+
+```{r}
+
+results %>% 
+  filter(term=="X") %>% 
+  ggplot(aes(x = N, y = estimate, color = model)) +
+  geom_point() +
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high),
+    width = 0.1
+  ) +
+  scale_x_continuous(trans = "log10", breaks = N_values) +
+  geom_hline(yintercept = beta, linetype = "dashed", color = "black") +
+  labs(
+    title = "Coefficient Estimates with 95% Confidence Intervals",
+    subtitle = "Dashed line indicates true value of β = 10",
+    y = "Estimated Coefficient", x = "Number of Individuals (N)"
+  ) +
+  theme_minimal()
+
+```
+
+The figure below plots the estimated coefficient on $\alpha$ across different values of $N$. The dashed line marks the true value $\alpha = 1$.
+
+Key points:
+
+- Both OLS and Random Effects are unbiased (on average they estimate the true coefficient)
+- However, Random Effects is less efficient: its confidence intervals are larger, especially at low $N$
+- As $N$ increases, the precision of both estimators improves, but OLS consistently dominates Random Effects in terms of standard error
+
+```{r}
+
+results %>% 
+  filter(term=="(Intercept)") %>% 
+  ggplot(aes(x = N, y = estimate, color = model)) +
+  geom_point() +
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high),
+    width = 0.1
+  ) +
+  scale_x_continuous(trans = "log10", breaks = N_values) +
+  geom_hline(yintercept = alpha, linetype = "dashed", color = "black") +
+  labs(
+    title = "Coefficient Estimates with 95% Confidence Intervals",
+    subtitle = "Dashed line indicates true value of α = 1",
+    y = "Estimated Coefficient", x = "Number of Individuals (N)"
+  ) +
+  theme_minimal()
+
+```
+
+
+<br>
+
+
+## Summary
+
+Efficiency gains from Random Effects are largest when $N$ is small and apply to the slope coefficient.
+
+In real-world applications, where observation-level heterogeneity is present and uncorrelated with the covariates, Random Effects can provide more precise inference than pooled OLS.
+
+
+
+
+
+
+

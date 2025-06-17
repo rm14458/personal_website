@@ -1,5 +1,1 @@
----
-title: "personal-website"
----
-
-This is my personal website. It is mostly just a stats blog.
+My name is Robert Martin. I work as a data scientist and this is my personal website. It is mostly just a collection of useful results in different areas of statistics/data science.
