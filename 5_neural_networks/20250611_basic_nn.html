@@ -225,18 +225,34 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#simple-feedforward-neural-network" id="toc-simple-feedforward-neural-network" class="nav-link active" data-scroll-target="#simple-feedforward-neural-network"><strong>Simple Feedforward Neural Network</strong></a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><strong>Packages</strong></a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction"><strong>Introduction</strong></a></li>
+  <li><a href="#neural-network-setup" id="toc-neural-network-setup" class="nav-link" data-scroll-target="#neural-network-setup"><strong>Neural Network Setup</strong></a>
+  <ul class="collapse">
+  <li><a href="#forward-pass" id="toc-forward-pass" class="nav-link" data-scroll-target="#forward-pass">Forward Pass</a></li>
+  <li><a href="#combined-expression" id="toc-combined-expression" class="nav-link" data-scroll-target="#combined-expression">Combined Expression</a></li>
+  <li><a href="#target-function" id="toc-target-function" class="nav-link" data-scroll-target="#target-function">Target Function</a></li>
+  <li><a href="#loss-function" id="toc-loss-function" class="nav-link" data-scroll-target="#loss-function">Loss Function</a></li>
+  <li><a href="#diagram" id="toc-diagram" class="nav-link" data-scroll-target="#diagram">Diagram</a></li>
+  </ul></li>
+  <li><a href="#running-the-neural-network-for-one-iteration-using-pytorch" id="toc-running-the-neural-network-for-one-iteration-using-pytorch" class="nav-link" data-scroll-target="#running-the-neural-network-for-one-iteration-using-pytorch"><strong>Running the Neural Network For One Iteration Using Pytorch</strong></a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7"><strong>Simple Feedforward Neural Network</strong></h1></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
-<div style="text-align: center;">
-<section id="simple-feedforward-neural-network" class="level1">
-
+<section id="simple-feedforward-neural-network" class="level1" style="text-align: center;">
+<h1><strong>Simple Feedforward Neural Network</strong></h1>
 </section>
 <section id="packages" class="level1">
 <h1><strong>Packages</strong></h1>
@@ -731,7 +747,6 @@ W^{(1)} \leftarrow W^{(1)} - \eta \cdot \frac{\partial \mathcal{L}}{\partial W^{
 
 
 </section>
-</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
