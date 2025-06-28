@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Coin Flipping – About</title>
+<title>coin_flipping – About</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -214,10 +214,17 @@ window.Quarto = {
     <a class="nav-link" href="../6_causal_inference/causal_inference.html"> 
 <span class="menu-text">Causal Inference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../7_neural_networks/neural_networks.html"> 
-<span class="menu-text">Neural Networks</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-neural-networks" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Neural Networks</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-neural-networks">    
+        <li>
+    <a class="dropdown-item" href="../7_neural_networks/20250611_basic_nn.html">
+ <span class="dropdown-text">Simple FFNN</span></a>
   </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -229,55 +236,43 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#packages" id="toc-packages" class="nav-link active" data-scroll-target="#packages">Packages</a></li>
-  <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification">Model Specification</a></li>
-  <li><a href="#visualise-simulated-data" id="toc-visualise-simulated-data" class="nav-link" data-scroll-target="#visualise-simulated-data">Visualise Simulated Data</a></li>
-  <li><a href="#prior-distribution" id="toc-prior-distribution" class="nav-link" data-scroll-target="#prior-distribution">Prior Distribution</a></li>
-  <li><a href="#posterior-distribution" id="toc-posterior-distribution" class="nav-link" data-scroll-target="#posterior-distribution">Posterior Distribution</a></li>
-  <li><a href="#sampling-from-the-posterior" id="toc-sampling-from-the-posterior" class="nav-link" data-scroll-target="#sampling-from-the-posterior">Sampling From The Posterior</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><strong>Coin Flipping</strong></h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7"><strong>Coin Flipping</strong></h1></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
+<div style="text-align: center;">
+<section id="coin-flipping" class="level1">
 
-
-</header>
-
-
+</section>
 <section id="packages" class="level1">
-<h1>Packages</h1>
-<div id="cell-3" class="cell" data-execution_count="1">
+<h1><strong>Packages</strong></h1>
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm, beta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-4" class="cell" data-execution_count="2">
+<div id="cell-3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="introduction" class="level1">
+<h1><strong>Introduction</strong></h1>
+<p>In this notebook, we study a simple probabilistic model for coin flipping. We assume each flip results in either a head (1) or tail (0), modeled as a Bernoulli random variable with unknown success probability <span class="math inline">\(\theta\)</span>. Our goals are to:</p>
+<ul>
+<li>Simulate coin flips under a known value of <span class="math inline">\(\theta\)</span></li>
+<li>Specify the likelihood function for a sequence of flips</li>
+<li>Visualize simulated outcomes and their empirical properties</li>
+<li>Use the likelihood to explore inference on <span class="math inline">\(\theta\)</span></li>
+</ul>
+<p>This example provides an intuitive foundation for understanding Bayesian updating in discrete probability models.</p>
+</section>
 <section id="model-specification" class="level1">
-<h1>Model Specification</h1>
+<h1><strong>Model Specification</strong></h1>
 <p>Let <span class="math inline">\(y_i\)</span> be the result of flipping a coin which lands on heads with probability <span class="math inline">\(\theta\)</span> and tails with probability <span class="math inline">\(1-\theta\)</span>. If it lands on heads we set <span class="math inline">\(y_i = 1\)</span> and if it lands on tails we set <span class="math inline">\(y_i = 0\)</span>. We therefore have that each observation <span class="math inline">\(y_i\)</span> follows a <strong>Bernoulli distribution</strong>:<br>
 <span class="math display">\[
   y_i \mid \theta \sim \text{Bernoulli}(\theta), \quad i = 1, \dots, N,
@@ -293,8 +288,8 @@ p(\mathbf{y} \mid \theta) = \theta^S (1 - \theta)^{N - S}.
 \]</span></p>
 </section>
 <section id="visualise-simulated-data" class="level1">
-<h1>Visualise Simulated Data</h1>
-<div id="cell-8" class="cell" data-execution_count="3">
+<h1><strong>Visualise Simulated Data</strong></h1>
+<div id="cell-9" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameter values</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">500</span>                 <span class="co"># Number of observations</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>true_theta <span class="op">=</span> <span class="fl">0.3</span>        <span class="co"># True probability of success</span></span>
@@ -306,7 +301,7 @@ p(\mathbf{y} \mid \theta) = \theta^S (1 - \theta)^{N - S}.
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>cumulative_success <span class="op">=</span> np.cumsum(y)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>cumulative_rate <span class="op">=</span> cumulative_success <span class="op">/</span> (np.arange(N) <span class="op">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-9" class="cell" data-execution_count="4">
+<div id="cell-10" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create plot</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -344,18 +339,18 @@ p(\mathbf{y} \mid \theta) = \theta^S (1 - \theta)^{N - S}.
 </div>
 </section>
 <section id="prior-distribution" class="level1">
-<h1>Prior Distribution</h1>
+<h1><strong>Prior Distribution</strong></h1>
 <p>We assume a <strong>Beta prior</strong> for <span class="math inline">\(\theta\)</span>:<br>
 <span class="math display">\[
 \theta \sim \text{Beta}(\alpha, \beta),
 \]</span><br>
 with hyperparameters <span class="math inline">\(\alpha, \beta &gt; 0\)</span>.</p>
-<div id="cell-12" class="cell" data-execution_count="5">
+<div id="cell-13" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prior parameters (Beta distribution)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>alpha_0 <span class="op">=</span> <span class="dv">2</span>    <span class="co"># Prior "successes" + 1</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>beta_0 <span class="op">=</span> <span class="dv">2</span>     <span class="co"># Prior "failures" + 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-13" class="cell" data-execution_count="6">
+<div id="cell-14" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create grid of theta values</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>theta_grid <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">500</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -396,7 +391,7 @@ with hyperparameters <span class="math inline">\(\alpha, \beta &gt; 0\)</span>.<
 </div>
 </section>
 <section id="posterior-distribution" class="level1">
-<h1>Posterior Distribution</h1>
+<h1><strong>Posterior Distribution</strong></h1>
 <p>The posterior is proportional to:<br>
 <span class="math display">\[
 p(\theta \mid \mathbf{y}) \propto \theta^S (1 - \theta)^{N - S} \cdot \theta^{\alpha-1} (1 - \theta)^{\beta-1} = \theta^{\alpha + S - 1} (1 - \theta)^{\beta + N - S - 1}.
@@ -405,7 +400,7 @@ This is a <strong>Beta distribution</strong>:<br>
 <span class="math display">\[
 \theta \mid \mathbf{y} \sim \text{Beta}(\alpha + S, \beta + N - S).
 \]</span></p>
-<div id="cell-16" class="cell" data-execution_count="7">
+<div id="cell-17" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define observation subsets</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>observation_subsets <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">200</span>, <span class="dv">500</span>]  <span class="co"># Different sample sizes to plot</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">'green'</span>, <span class="st">'orange'</span>, <span class="st">'red'</span>, <span class="st">'purple'</span>]</span>
@@ -461,7 +456,7 @@ This is a <strong>Beta distribution</strong>:<br>
 </div>
 </section>
 <section id="sampling-from-the-posterior" class="level1">
-<h1>Sampling From The Posterior</h1>
+<h1><strong>Sampling From The Posterior</strong></h1>
 <p>To implement the MH algorithm assume that at iteration <span class="math inline">\(t\)</span>, given a sample value at iteration <span class="math inline">\(t-1\)</span>, <span class="math inline">\(\beta_{t-1}\)</span> we perform the following:</p>
 <ol type="1">
 <li><strong>Generate a candidate value</strong>, <span class="math inline">\(\beta_c\)</span>, from the proposal distribution <span class="math inline">\(q(\beta_c|\beta_{t-1})\)</span>.<br>
@@ -480,7 +475,7 @@ This is a <strong>Beta distribution</strong>:<br>
 </ul></li>
 <li>Set <span class="math inline">\(t = t + 1\)</span> and go back to Step 1.</li>
 </ol>
-<div id="cell-19" class="cell" data-execution_count="8">
+<div id="cell-20" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-posterior function (up to a constant)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_posterior(theta, y, alpha_0, beta_0):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> theta <span class="op">&lt;=</span> <span class="dv">0</span> <span class="kw">or</span> theta <span class="op">&gt;=</span> <span class="dv">1</span>:  <span class="co"># Reject values outside [0,1]</span></span>
@@ -495,7 +490,7 @@ This is a <strong>Beta distribution</strong>:<br>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> log_likelihood <span class="op">+</span> log_prior</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-20" class="cell" data-execution_count="9">
+<div id="cell-21" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Metropolis-Hastings function</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> metropolis_hastings(y, alpha_0, beta_0, initial_theta<span class="op">=</span><span class="fl">0.5</span>, </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                       n_samples<span class="op">=</span><span class="dv">10000</span>, step_size<span class="op">=</span><span class="fl">0.05</span>):</span>
@@ -523,7 +518,7 @@ This is a <strong>Beta distribution</strong>:<br>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Acceptance rate: </span><span class="sc">{</span>acceptance_rate<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> theta_samples</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-21" class="cell" data-execution_count="10">
+<div id="cell-22" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run MCMC</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>theta_samples <span class="op">=</span> metropolis_hastings(y<span class="op">=</span>y, alpha_0<span class="op">=</span>alpha_0, beta_0<span class="op">=</span>beta_0, </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                                  initial_theta<span class="op">=</span><span class="fl">0.5</span>, n_samples<span class="op">=</span><span class="dv">15000</span>, </span>
@@ -532,7 +527,7 @@ This is a <strong>Beta distribution</strong>:<br>
 <pre><code>Acceptance rate: 0.31</code></pre>
 </div>
 </div>
-<div id="cell-22" class="cell" data-execution_count="11">
+<div id="cell-23" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Burn-in and thinning</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>burn_in <span class="op">=</span> <span class="dv">2000</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>thinned_samples <span class="op">=</span> theta_samples[burn_in::<span class="dv">5</span>]</span>
@@ -587,6 +582,7 @@ Posterior 95% credible interval: [0.27002716 0.34923126]</code></pre>
 
 
 </section>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

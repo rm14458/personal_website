@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Multivariate Regression – About</title>
+<title>multivariate_regression – About</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -214,10 +214,17 @@ window.Quarto = {
     <a class="nav-link" href="../6_causal_inference/causal_inference.html"> 
 <span class="menu-text">Causal Inference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../7_neural_networks/neural_networks.html"> 
-<span class="menu-text">Neural Networks</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-neural-networks" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Neural Networks</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-neural-networks">    
+        <li>
+    <a class="dropdown-item" href="../7_neural_networks/20250611_basic_nn.html">
+ <span class="dropdown-text">Simple FFNN</span></a>
   </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -229,45 +236,21 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#packages" id="toc-packages" class="nav-link active" data-scroll-target="#packages">Packages</a></li>
-  <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification">Model Specification</a></li>
-  <li><a href="#visualise-simulated-data" id="toc-visualise-simulated-data" class="nav-link" data-scroll-target="#visualise-simulated-data">Visualise Simulated Data</a></li>
-  <li><a href="#conditional-distribution" id="toc-conditional-distribution" class="nav-link" data-scroll-target="#conditional-distribution">Conditional Distribution</a></li>
-  <li><a href="#prior-distributions" id="toc-prior-distributions" class="nav-link" data-scroll-target="#prior-distributions">Prior Distributions</a></li>
-  <li><a href="#joint-posterior-distribution" id="toc-joint-posterior-distribution" class="nav-link" data-scroll-target="#joint-posterior-distribution">Joint Posterior Distribution</a></li>
-  <li><a href="#sampling-from-the-posteriors" id="toc-sampling-from-the-posteriors" class="nav-link" data-scroll-target="#sampling-from-the-posteriors">Sampling From The Posteriors</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><strong>Multivariate Regression</strong></h1>
-</div>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7"><strong>Multivariate Regression</strong></h1></header>
 
 
 
-<div class="quarto-title-meta">
 
-    
-  
-    
-  </div>
-  
+<div style="text-align: center;">
+<section id="multivariate-regression" class="level1">
 
-
-</header>
-
-
+</section>
 <section id="packages" class="level1">
-<h1>Packages</h1>
+<h1><strong>Packages</strong></h1>
 <div id="b9da1c8f" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -278,7 +261,7 @@ window.Quarto = {
 </div>
 </section>
 <section id="model-specification" class="level1">
-<h1>Model Specification</h1>
+<h1><strong>Model Specification</strong></h1>
 <p>Assume we are considering the following model:</p>
 <p><span class="math display">\[
 \mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}
@@ -297,7 +280,7 @@ window.Quarto = {
 <p>Where: - <span class="math inline">\(\mathbf{0}\)</span> is an <span class="math inline">\(N \times 1\)</span> vector of zeros - <span class="math inline">\(\mathbf{I}_N\)</span> is the <span class="math inline">\(N \times N\)</span> identity matrix - <span class="math inline">\(\sigma^2\)</span> is the common variance parameter</p>
 </section>
 <section id="visualise-simulated-data" class="level1">
-<h1>Visualise Simulated Data</h1>
+<h1><strong>Visualise Simulated Data</strong></h1>
 <div id="ceff4ce8" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># parameter values</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">100</span> <span class="co"># n observations</span></span>
@@ -356,7 +339,7 @@ window.Quarto = {
 </div>
 </section>
 <section id="conditional-distribution" class="level1">
-<h1>Conditional Distribution</h1>
+<h1><strong>Conditional Distribution</strong></h1>
 <p>For each observation <span class="math inline">\(i\)</span>:</p>
 <p><span class="math display">\[
 y_i | \boldsymbol{\beta}, \sigma^2 \sim \mathcal{N}(\mathbf{x}_i\boldsymbol{\beta}, \sigma^2)
@@ -368,7 +351,7 @@ p(\mathbf{Y} | \mathbf{X}, \boldsymbol{\beta}, \sigma^2) = (2\pi\sigma^2)^{-N/2}
 \]</span></p>
 </section>
 <section id="prior-distributions" class="level1">
-<h1>Prior Distributions</h1>
+<h1><strong>Prior Distributions</strong></h1>
 <p>We assume the following prior for <span class="math inline">\(\boldsymbol{\beta}\)</span> given <span class="math inline">\(\sigma^2\)</span> (multivariate normal):</p>
 <p><span class="math display">\[
 p(\boldsymbol{\beta} | \sigma^2) = (2\pi\sigma^2)^{-P/2} |\mathbf{A}_0|^{1/2} \exp\left(-\frac{1}{2\sigma^2}(\boldsymbol{\beta} - \boldsymbol{\mu}_0)^\top \mathbf{A}_0 (\boldsymbol{\beta} - \boldsymbol{\mu}_0)\right)
@@ -456,7 +439,7 @@ p(\sigma^2) = \frac{b_0^{a_0}}{\Gamma(a_0)} (\sigma^2)^{-(a_0 + 1)} \exp\left(-\
 </div>
 </section>
 <section id="joint-posterior-distribution" class="level1">
-<h1>Joint Posterior Distribution</h1>
+<h1><strong>Joint Posterior Distribution</strong></h1>
 <p>The joint posterior distribution is proportional to:</p>
 <p><span class="math display">\[
 p(\boldsymbol{\beta}, \sigma^2 | \mathbf{Y}, \mathbf{X}) \propto p(\mathbf{Y} | \mathbf{X}, \boldsymbol{\beta}, \sigma^2) \cdot p(\boldsymbol{\beta} | \sigma^2) \cdot p(\sigma^2)
@@ -567,7 +550,7 @@ b_N &amp;= b_0 + \frac{1}{2}\left(\mathbf{Y}^\top\mathbf{Y} + \boldsymbol{\mu}_0
 </div>
 </section>
 <section id="sampling-from-the-posteriors" class="level1">
-<h1>Sampling From The Posteriors</h1>
+<h1><strong>Sampling From The Posteriors</strong></h1>
 <div id="dfcd9f27" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log-posterior function (up to a constant)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_posterior(beta, sigma_sq, X, y, mu_0, A_0, a_0, b_0):</span>
@@ -699,6 +682,7 @@ b_N &amp;= b_0 + \frac{1}{2}\left(\mathbf{Y}^\top\mathbf{Y} + \boldsymbol{\mu}_0
 
 
 </section>
+</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
