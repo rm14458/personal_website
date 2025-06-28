@@ -275,7 +275,12 @@ window.Quarto = {
 <p><span class="math display">\[
 \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \sigma^2\mathbf{I}_N)
 \]</span></p>
-<p>Where: - <span class="math inline">\(\mathbf{0}\)</span> is an <span class="math inline">\(N \times 1\)</span> vector of zeros - <span class="math inline">\(\mathbf{I}_N\)</span> is the <span class="math inline">\(N \times N\)</span> identity matrix - <span class="math inline">\(\sigma^2\)</span> is the common variance parameter</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{0}\)</span> is an <span class="math inline">\(N \times 1\)</span> vector of zeros</li>
+<li><span class="math inline">\(\mathbf{I}_N\)</span> is the <span class="math inline">\(N \times N\)</span> identity matrix</li>
+<li><span class="math inline">\(\sigma^2\)</span> is the common variance parameter</li>
+</ul>
 </section>
 <section id="visualise-simulated-data" class="level1">
 <h1><strong>Visualise Simulated Data</strong></h1>
@@ -342,7 +347,13 @@ window.Quarto = {
 <p><span class="math display">\[
 y_i | \boldsymbol{\beta}, \sigma^2 \sim \mathcal{N}(\mathbf{x}_i\boldsymbol{\beta}, \sigma^2)
 \]</span></p>
-<p>Where: - <span class="math inline">\(y_i\)</span> is the scalar response for observation <span class="math inline">\(i\)</span> - <span class="math inline">\(\mathbf{x}_i\)</span> is the <span class="math inline">\(1 \times P\)</span> row vector of predictors for observation <span class="math inline">\(i\)</span> - <span class="math inline">\(\boldsymbol{\beta}\)</span> is the <span class="math inline">\(P \times 1\)</span> column vector of coefficients - <span class="math inline">\(\sigma^2\)</span> is the scalar variance parameter</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(y_i\)</span> is the scalar response for observation <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\mathbf{x}_i\)</span> is the <span class="math inline">\(1 \times P\)</span> row vector of predictors for observation <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}\)</span> is the <span class="math inline">\(P \times 1\)</span> column vector of coefficients</li>
+<li><span class="math inline">\(\sigma^2\)</span> is the scalar variance parameter</li>
+</ul>
 <p>Given <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span>, and <span class="math inline">\(\sigma^2\)</span>, the likelihood of <span class="math inline">\(\mathbf{Y}\)</span> is:</p>
 <p><span class="math display">\[
 p(\mathbf{Y} | \mathbf{X}, \boldsymbol{\beta}, \sigma^2) = (2\pi\sigma^2)^{-N/2} \exp\left(-\frac{1}{2\sigma^2}(\mathbf{Y} - \mathbf{X}\boldsymbol{\beta})^\top(\mathbf{Y} - \mathbf{X}\boldsymbol{\beta})\right)
@@ -354,12 +365,21 @@ p(\mathbf{Y} | \mathbf{X}, \boldsymbol{\beta}, \sigma^2) = (2\pi\sigma^2)^{-N/2}
 <p><span class="math display">\[
 p(\boldsymbol{\beta} | \sigma^2) = (2\pi\sigma^2)^{-P/2} |\mathbf{A}_0|^{1/2} \exp\left(-\frac{1}{2\sigma^2}(\boldsymbol{\beta} - \boldsymbol{\mu}_0)^\top \mathbf{A}_0 (\boldsymbol{\beta} - \boldsymbol{\mu}_0)\right)
 \]</span></p>
-<p>Parameters: - <span class="math inline">\(\boldsymbol{\mu}_0\)</span>: <span class="math inline">\(P \times 1\)</span> prior mean vector - <span class="math inline">\(\mathbf{A}_0\)</span>: <span class="math inline">\(P \times P\)</span> prior precision matrix - <span class="math inline">\(\sigma^2\)</span>: Scales the covariance matrix (<span class="math inline">\(\sigma^2 \mathbf{A}_0^{-1}\)</span>)</p>
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{\mu}_0\)</span>: <span class="math inline">\(P \times 1\)</span> prior mean vector</li>
+<li><span class="math inline">\(\mathbf{A}_0\)</span>: <span class="math inline">\(P \times P\)</span> prior precision matrix</li>
+<li><span class="math inline">\(\sigma^2\)</span>: Scales the covariance matrix (<span class="math inline">\(\sigma^2 \mathbf{A}_0^{-1}\)</span>)</li>
+</ul>
 <p>We assume the following prior for <span class="math inline">\(\sigma^2\)</span> (Inverse Gamma):</p>
 <p><span class="math display">\[
 p(\sigma^2) = \frac{b_0^{a_0}}{\Gamma(a_0)} (\sigma^2)^{-(a_0 + 1)} \exp\left(-\frac{b_0}{\sigma^2}\right)
 \]</span></p>
-<p>Parameters: - <span class="math inline">\(a_0 &gt; 0\)</span>: Shape parameter - <span class="math inline">\(b_0 &gt; 0\)</span>: Scale parameter</p>
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(a_0 &gt; 0\)</span>: Shape parameter</li>
+<li><span class="math inline">\(b_0 &gt; 0\)</span>: Scale parameter</li>
+</ul>
 <div id="0a8936be" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prior parameters (multivariate normal for beta)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> <span class="dv">3</span>  <span class="co"># number of predictors</span></span>
