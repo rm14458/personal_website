@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Panel Data Basics – About</title>
+<title>Random Effects vs Fixed Effects – About</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -154,41 +154,26 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-linear-models" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Linear Models</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-linear-models">    
-        <li>
-    <a class="dropdown-item" href="../1_linear_models/20250526_ols_consistency.html">
- <span class="dropdown-text">OLS Consistency</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../1_linear_models/20250527_ols_normality.html">
- <span class="dropdown-text">OLS Normality</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bayesian-statistics" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Bayesian Statistics</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-bayesian-statistics">    
         <li>
-    <a class="dropdown-item" href="../2_bayesian_statistics/20250414_coin_flipping.html">
+    <a class="dropdown-item" href="../1_bayesian_statistics/20250414_coin_flipping.html">
  <span class="dropdown-text">Basics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../2_bayesian_statistics/20250410_multivariate_regression.html">
+    <a class="dropdown-item" href="../1_bayesian_statistics/20250410_multivariate_regression.html">
  <span class="dropdown-text">Linear Modelling</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../3_hierarchical_models/hierarchical_models.html"> 
+    <a class="nav-link" href="../2_hierarchical_models/hierarchical_models.html"> 
 <span class="menu-text">Hierarchical Models</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../4_time_series/time_series.html"> 
+    <a class="nav-link" href="../3_time_series/time_series.html"> 
 <span class="menu-text">Time Series</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -197,34 +182,35 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-panel-data">    
         <li>
-    <a class="dropdown-item" href="../5_panel_data/20250417_panel_basics.html">
+    <a class="dropdown-item" href="../4_panel_data/20250417_panel_basics.html">
  <span class="dropdown-text">Panel Data Basics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../5_panel_data/20250424_re_vs_fe.html">
+    <a class="dropdown-item" href="../4_panel_data/20250424_re_vs_fe.html">
  <span class="dropdown-text">Random Effects vs Fxed Effects</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../5_panel_data/20250425_re_vs_eb.html">
+    <a class="dropdown-item" href="../4_panel_data/20250425_re_vs_eb.html">
  <span class="dropdown-text">Random Effects vs Empirical Bayes</span></a>
   </li>  
     </ul>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="../6_causal_inference/causal_inference.html"> 
-<span class="menu-text">Causal Inference</span></a>
-  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-neural-networks" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Neural Networks</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-neural-networks">    
         <li>
-    <a class="dropdown-item" href="../7_neural_networks/20250611_basic_nn.html">
+    <a class="dropdown-item" href="../5_neural_networks/20250611_basic_nn.html">
  <span class="dropdown-text">Simple FFNN</span></a>
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">Monetary Policy</span>
+    </span>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -243,7 +229,7 @@ window.Quarto = {
   <ul>
   <li><a href="#packages" id="toc-packages" class="nav-link active" data-scroll-target="#packages">Packages</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#model---random-effects" id="toc-model---random-effects" class="nav-link" data-scroll-target="#model---random-effects">Model - Random Effects</a></li>
+  <li><a href="#model---fixed-effects" id="toc-model---fixed-effects" class="nav-link" data-scroll-target="#model---fixed-effects">Model - Fixed Effects</a></li>
   <li><a href="#simulate-data" id="toc-simulate-data" class="nav-link" data-scroll-target="#simulate-data">Simulate Data</a></li>
   <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
@@ -255,7 +241,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Panel Data Basics</h1>
+<h1 class="title">Random Effects vs Fixed Effects</h1>
 </div>
 
 
@@ -289,12 +275,11 @@ window.Quarto = {
 </section>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>We perform a Monte Carlo simulation to demonstrate the efficiency of the random effects estimator compared to the standard OLS estimator in a panel data setting with a random effects error structure.</p>
-<p>The goal is to show how the OLS estimator, which ignores the panel structure, can be inefficient when there are observation-specific unobserved effects that are uncorrelated with the covariates. In contrast, the random effects estimator exploits this structure to improve estimation precision.</p>
+<p>We conduct a Monte Carlo simulation to compare the performance of OLS, Random Effects, and Fixed Effects estimators in a panel data setting where the unobserved observation-specific effect is correlated with the covariate of interest. This setting violates the key assumption behind the Random Effects estimator, and we demonstrate how this affects bias and precision.</p>
 <p><br></p>
 </section>
-<section id="model---random-effects" class="level2">
-<h2 class="anchored" data-anchor-id="model---random-effects">Model - Random Effects</h2>
+<section id="model---fixed-effects" class="level2">
+<h2 class="anchored" data-anchor-id="model---fixed-effects">Model - Fixed Effects</h2>
 <p>Assume we have the following panel data model:</p>
 <p><span class="math display">\[
 Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
@@ -307,40 +292,40 @@ Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
 </li>
 <li><span class="math inline">\(\alpha\)</span> is a constant<br>
 </li>
-<li><span class="math inline">\(\beta\)</span> is the coefficient of interest<br>
+<li><span class="math inline">\(\beta\)</span> is the coefficient we want to estimate<br>
 </li>
-<li><span class="math inline">\(\eta_i \sim \mathcal{N}(0, \sigma_\eta^2)\)</span> is the observation-specific effect<br>
-</li>
+<li><span class="math inline">\(\eta_i \sim \mathcal{N}(0, \sigma_\eta^2)\)</span> is an unobserved observation-specific effect</li>
 <li><span class="math inline">\(\varepsilon_{it} \sim \mathcal{N}(0, \sigma_\varepsilon^2)\)</span> is the idiosyncratic error term</li>
 </ul>
-<p>A key assumption here is that the observation-specific effect is uncorrelated with the covariates: <span class="math display">\[
-\text{Cov}(X_{it}, \eta_i) = 0
+<p>In this simulation, we violate the Random Effects assumption by allowing: <span class="math display">\[
+\text{Cov}(X_{it}, \eta_i) \neq 0
 \]</span></p>
-<p>This is the identifying assumption that justifies the use of the random effects estimator. It implies that <span class="math inline">\(\eta_i\)</span> can be treated as part of the error structure and estimated efficiently using quasi-demeaning. If this assumption were violated, random effects would be biased and inconsistent, and a fixed effects estimator would be preferred.</p>
+<p>Specifically, we generate <span class="math inline">\(X_{it}\)</span> as a function of <span class="math inline">\(\eta_i\)</span> to induce correlation. This ensures that both OLS and RE estimators will be biased. In contrast, the Fixed Effects estimator removes <span class="math inline">\(\eta_i\)</span> via within-transformation, yielding consistent estimates of <span class="math inline">\(\beta\)</span>.</p>
 <p><br></p>
 </section>
 <section id="simulate-data" class="level2">
 <h2 class="anchored" data-anchor-id="simulate-data">Simulate Data</h2>
-<p>We simulate panel data under the assumption that the data-generating process includes a random effect. Specifically:</p>
+<p>We simulate panel data under the assumption that the data-generating process includes a fixed effect that is correlated with the covariate. Specifically:</p>
 <ul>
-<li>We vary the number of individuals <span class="math inline">\(N\)</span> and hold the number of time periods <span class="math inline">\(T\)</span> fixed</li>
-<li>The covariate <span class="math inline">\(X_{it}\)</span> is iid normal</li>
-<li>The observation-specific effect <span class="math inline">\(\eta_{i}\)</span> and the idiosyncratic error term <span class="math inline">\(\epsilon_{it}\)</span> are both normal with mean 0 and variance 1</li>
+<li>We vary the number of observations <span class="math inline">\(N\)</span> and hold the number of time periods <span class="math inline">\(T\)</span> fixed</li>
+<li>The individual-specific effect <span class="math inline">\(\eta_i\)</span> is drawn from a normal distribution and held constant across time</li>
+<li>The covariate <span class="math inline">\(X_{it}\)</span> is generated as a function of <span class="math inline">\(\eta_i\)</span>, inducing correlation between <span class="math inline">\(X_{it}\)</span> and the unobserved effect</li>
+<li>The idiosyncratic error term <span class="math inline">\(\varepsilon_{it}\)</span> is iid normal with mean 0 and variance 1</li>
 </ul>
 <p>The true parameter values are:</p>
 <ul>
 <li><span class="math inline">\(\alpha = 1\)</span></li>
 <li><span class="math inline">\(\beta = 10\)</span></li>
 </ul>
-<p>This setup mimics a typical balanced panel with strictly exogenous covariates and a classical random effects structure.</p>
+<p>This setup mimics a balanced panel where the regressor is endogenous with respect to the observation-specific effect, violating the assumptions behind the Random Effects estimator. As a result, OLS and RE will be biased, and only the Fixed Effects estimator will be consistent.</p>
 <p>The simulation function:</p>
 <ul>
 <li>Simulates data for a given <span class="math inline">\(N\)</span></li>
-<li>Estimates both OLS and Random Effects models</li>
+<li>Estimates OLS, Random Effects, and Fixed Effects models</li>
 <li>Returns coefficient estimates and confidence intervals</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set random seed</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># random seed</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameter Values</span></span>
@@ -354,27 +339,37 @@ Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>sigma_eps <span class="ot">&lt;-</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to simulate and estimate models</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to simulate and estimate models</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>simulate_and_estimate <span class="ot">&lt;-</span> <span class="cf">function</span>(N) {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  id <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>N, <span class="at">each =</span> T)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  time <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span>T, <span class="at">times =</span> N)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N <span class="sc">*</span> T)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  eta <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">rnorm</span>(N, <span class="dv">0</span>, sigma_eta), <span class="at">each =</span> T)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N <span class="sc">*</span> T, <span class="dv">0</span>, sigma_eps)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> X <span class="sc">+</span> eta <span class="sc">+</span> eps</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id =</span> <span class="fu">factor</span>(id), time, X, Y)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> data)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  re  <span class="ot">&lt;-</span> <span class="fu">plm</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> data, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"time"</span>), <span class="at">model =</span> <span class="st">"random"</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy</span>(ols, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"OLS"</span>, <span class="at">N =</span> N),</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy</span>(re, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)  <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"Random Effects"</span>, <span class="at">N =</span> N)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  eta_i <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N, <span class="dv">0</span>, sigma_eta)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  eta <span class="ot">&lt;-</span> <span class="fu">rep</span>(eta_i, <span class="at">each =</span> T)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Induce correlation: X depends on eta_i</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  X <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, N <span class="sc">*</span> T)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N) {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    X[((i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> T <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>(i <span class="sc">*</span> T)] <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> eta_i[i] <span class="sc">+</span> <span class="fu">rnorm</span>(T)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N <span class="sc">*</span> T, <span class="dv">0</span>, sigma_eps)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  Y <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> X <span class="sc">+</span> eta <span class="sc">+</span> eps</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id =</span> <span class="fu">factor</span>(id), time, X, Y)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  ols <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> data)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  re  <span class="ot">&lt;-</span> <span class="fu">plm</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> data, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"time"</span>), <span class="at">model =</span> <span class="st">"random"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  fe  <span class="ot">&lt;-</span> <span class="fu">plm</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> data, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"id"</span>, <span class="st">"time"</span>), <span class="at">model =</span> <span class="st">"within"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy</span>(ols, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"OLS"</span>, <span class="at">N =</span> N),</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy</span>(re, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)  <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"Random Effects"</span>, <span class="at">N =</span> N),</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tidy</span>(fe, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)  <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"Fixed Effects"</span>, <span class="at">N =</span> N)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run simulations</span></span>
@@ -384,68 +379,63 @@ Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>OLS ignores the panel structure entirely and treats all <span class="math inline">\(N \times T\)</span> observations as independent.</p>
-<p>Random Effects correctly accounts for the within-observation correlation introduced by <span class="math inline">\(\eta_i\)</span>, improving efficiency by reducing variance in the estimated coefficients.</p>
-<p>The figure below plots the estimated coefficient on <span class="math inline">\(X\)</span> across different values of <span class="math inline">\(N\)</span>. The dashed line marks the true value <span class="math inline">\(\beta = 10\)</span>.</p>
+<p>The plot below shows the estimated coefficient on <span class="math inline">\(X\)</span> across different values of <span class="math inline">\(N\)</span>. The dashed horizontal line marks the true value <span class="math inline">\(\beta = 10\)</span>.</p>
 <p>Key points:</p>
 <ul>
-<li>Both OLS and Random Effects are unbiased (on average they estimate the true coefficient)</li>
-<li>However, Random Effects is more efficient: its confidence intervals are narrower, especially at low <span class="math inline">\(N\)</span></li>
-<li>As <span class="math inline">\(N\)</span> increases, the precision of both estimators improves, but Random Effects consistently dominates OLS in terms of standard error</li>
+<li>Only the Fixed Effects estimator is unbiased: its estimates center around the true value across all <span class="math inline">\(N\)</span></li>
+<li>OLS and Random Effects are biased: they consistently overestimate <span class="math inline">\(\beta\)</span> due to the positive correlation between <span class="math inline">\(X_{it}\)</span> and <span class="math inline">\(\eta_i\)</span></li>
+<li>As <span class="math inline">\(N\)</span> increases, the bias in OLS and RE does not vanish</li>
+<li>The Fixed Effects estimator becomes more precise (narrower confidence intervals) as <span class="math inline">\(N\)</span> increases, as expected due to larger sample size</li>
 </ul>
+<p>This simulation confirms that when <span class="math inline">\(\eta_i\)</span> is correlated with <span class="math inline">\(X_{it}\)</span>, only the Fixed Effects estimator yields consistent estimates. OLS and RE fail because they attribute part of the variation in <span class="math inline">\(Y_{it}\)</span> caused by <span class="math inline">\(\eta_i\)</span> to <span class="math inline">\(X_{it}\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term<span class="sc">==</span><span class="st">"X"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"X"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> estimate, <span class="at">color =</span> model)) <span class="sc">+</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high),</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.1</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log10"</span>, <span class="at">breaks =</span> N_values) <span class="sc">+</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> beta, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Coefficient Estimates with 95% Confidence Intervals"</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Dashed line indicates true value of β = 10"</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Estimated Coefficient"</span>, <span class="at">x =</span> <span class="st">"Number of Individuals (N)"</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log10"</span>, <span class="at">breaks =</span> N_values) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> beta, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Coefficient Estimates for X"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Dashed line shows true β = 10. Only FE gives unbiased estimate."</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Estimated Coefficient"</span>, <span class="at">x =</span> <span class="st">"Number of Individuals (N)"</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="20250417_panel_basics_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="20250424_re_vs_fe_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>The figure below plots the estimated coefficient on <span class="math inline">\(\alpha\)</span> across different values of <span class="math inline">\(N\)</span>. The dashed line marks the true value <span class="math inline">\(\alpha = 1\)</span>.</p>
+<p>The plot below shows the estimated intercept <span class="math inline">\(\alpha\)</span> from the OLS and Random Effects models. The true value is <span class="math inline">\(\alpha = 1\)</span> (dashed line). The Fixed Effects model is excluded because it does not estimate the overall intercept — it only recovers within-observation deviations from observation means.</p>
 <p>Key points:</p>
 <ul>
-<li>Both OLS and Random Effects are unbiased (on average they estimate the true coefficient)</li>
-<li>However, Random Effects is less efficient: its confidence intervals are larger, especially at low <span class="math inline">\(N\)</span></li>
-<li>As <span class="math inline">\(N\)</span> increases, the precision of both estimators improves, but OLS consistently dominates Random Effects in terms of standard error</li>
+<li>Both OLS and RE recover <span class="math inline">\(\alpha\)</span> with similar levels of bias and precision</li>
+<li>As <span class="math inline">\(N\)</span> increases, the estimates of <span class="math inline">\(\alpha\)</span> become more precise for both models</li>
+<li>The Fixed Effects estimator intentionally omits <span class="math inline">\(\alpha\)</span> because the within transformation sweeps it out</li>
 </ul>
+<p>This illustrates that while FE is superior for estimating slope coefficients under correlation between <span class="math inline">\(\eta_i\)</span> and <span class="math inline">\(X_{it}\)</span>, it does not provide information about the level of <span class="math inline">\(\alpha\)</span> or other time-invariant effects.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term<span class="sc">==</span><span class="st">"(Intercept)"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"(Intercept)"</span>, model <span class="sc">!=</span> <span class="st">"Fixed Effects"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> N, <span class="at">y =</span> estimate, <span class="at">color =</span> model)) <span class="sc">+</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high),</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="fl">0.1</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log10"</span>, <span class="at">breaks =</span> N_values) <span class="sc">+</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> alpha, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Coefficient Estimates with 95% Confidence Intervals"</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Dashed line indicates true value of α = 1"</span>,</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Estimated Coefficient"</span>, <span class="at">x =</span> <span class="st">"Number of Individuals (N)"</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">width =</span> <span class="fl">0.1</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log10"</span>, <span class="at">breaks =</span> N_values) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> alpha, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Intercept Estimates (α)"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Dashed line shows true α = 1. FE does not estimate intercept."</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Estimated Intercept"</span>, <span class="at">x =</span> <span class="st">"Number of Individuals (N)"</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="20250417_panel_basics_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="20250424_re_vs_fe_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -454,8 +444,12 @@ Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
 </section>
 <section id="summary" class="level2">
 <h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>Efficiency gains from Random Effects are largest when <span class="math inline">\(N\)</span> is small and apply to the slope coefficient.</p>
-<p>In real-world applications, where observation-level heterogeneity is present and uncorrelated with the covariates, Random Effects can provide more precise inference than pooled OLS.</p>
+<ul>
+<li>When observation-specific effects are correlated with regressors, the Fixed Effects estimator is consistent, while OLS and Random Effects are biased</li>
+<li>Random Effects gains in efficiency only apply if the unobserved effect is uncorrelated with covariates — that assumption is violated here</li>
+<li>Fixed Effects does not estimate the intercept — this is a feature, not a bug: it focuses on within-observation variation</li>
+<li>As sample size increases, FE estimates become more precise, while OLS and RE remain biased</li>
+</ul>
 
 
 </section>

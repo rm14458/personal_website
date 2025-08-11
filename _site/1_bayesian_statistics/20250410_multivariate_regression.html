@@ -154,41 +154,26 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-linear-models" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Linear Models</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-linear-models">    
-        <li>
-    <a class="dropdown-item" href="../1_linear_models/20250526_ols_consistency.html">
- <span class="dropdown-text">OLS Consistency</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="../1_linear_models/20250527_ols_normality.html">
- <span class="dropdown-text">OLS Normality</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bayesian-statistics" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Bayesian Statistics</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-bayesian-statistics">    
         <li>
-    <a class="dropdown-item" href="../2_bayesian_statistics/20250414_coin_flipping.html">
+    <a class="dropdown-item" href="../1_bayesian_statistics/20250414_coin_flipping.html">
  <span class="dropdown-text">Basics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../2_bayesian_statistics/20250410_multivariate_regression.html">
+    <a class="dropdown-item" href="../1_bayesian_statistics/20250410_multivariate_regression.html">
  <span class="dropdown-text">Linear Modelling</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../3_hierarchical_models/hierarchical_models.html"> 
+    <a class="nav-link" href="../2_hierarchical_models/hierarchical_models.html"> 
 <span class="menu-text">Hierarchical Models</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../4_time_series/time_series.html"> 
+    <a class="nav-link" href="../3_time_series/time_series.html"> 
 <span class="menu-text">Time Series</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -197,34 +182,35 @@ window.Quarto = {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-panel-data">    
         <li>
-    <a class="dropdown-item" href="../5_panel_data/20250417_panel_basics.html">
+    <a class="dropdown-item" href="../4_panel_data/20250417_panel_basics.html">
  <span class="dropdown-text">Panel Data Basics</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../5_panel_data/20250424_re_vs_fe.html">
+    <a class="dropdown-item" href="../4_panel_data/20250424_re_vs_fe.html">
  <span class="dropdown-text">Random Effects vs Fxed Effects</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../5_panel_data/20250425_re_vs_eb.html">
+    <a class="dropdown-item" href="../4_panel_data/20250425_re_vs_eb.html">
  <span class="dropdown-text">Random Effects vs Empirical Bayes</span></a>
   </li>  
     </ul>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="../6_causal_inference/causal_inference.html"> 
-<span class="menu-text">Causal Inference</span></a>
-  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-neural-networks" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Neural Networks</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-neural-networks">    
         <li>
-    <a class="dropdown-item" href="../7_neural_networks/20250611_basic_nn.html">
+    <a class="dropdown-item" href="../5_neural_networks/20250611_basic_nn.html">
  <span class="dropdown-text">Simple FFNN</span></a>
   </li>  
     </ul>
   </li>
+  <li class="nav-item">
+    <span class="nav-link">
+<span class="menu-text">Monetary Policy</span>
+    </span>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -236,18 +222,30 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#multivariate-regression" id="toc-multivariate-regression" class="nav-link active" data-scroll-target="#multivariate-regression"><strong>Multivariate Regression</strong></a></li>
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages"><strong>Packages</strong></a></li>
+  <li><a href="#model-specification" id="toc-model-specification" class="nav-link" data-scroll-target="#model-specification"><strong>Model Specification</strong></a></li>
+  <li><a href="#visualise-simulated-data" id="toc-visualise-simulated-data" class="nav-link" data-scroll-target="#visualise-simulated-data"><strong>Visualise Simulated Data</strong></a></li>
+  <li><a href="#conditional-distribution" id="toc-conditional-distribution" class="nav-link" data-scroll-target="#conditional-distribution"><strong>Conditional Distribution</strong></a></li>
+  <li><a href="#prior-distributions" id="toc-prior-distributions" class="nav-link" data-scroll-target="#prior-distributions"><strong>Prior Distributions</strong></a></li>
+  <li><a href="#joint-posterior-distribution" id="toc-joint-posterior-distribution" class="nav-link" data-scroll-target="#joint-posterior-distribution"><strong>Joint Posterior Distribution</strong></a></li>
+  <li><a href="#sampling-from-the-posteriors" id="toc-sampling-from-the-posteriors" class="nav-link" data-scroll-target="#sampling-from-the-posteriors"><strong>Sampling From The Posteriors</strong></a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7"><strong>Multivariate Regression</strong></h1></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
-<div style="text-align: center;">
-<section id="multivariate-regression" class="level1">
-
+<section id="multivariate-regression" class="level1" style="text-align: center;">
+<h1><strong>Multivariate Regression</strong></h1>
 </section>
 <section id="packages" class="level1">
 <h1><strong>Packages</strong></h1>
@@ -277,7 +275,12 @@ window.Quarto = {
 <p><span class="math display">\[
 \boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \sigma^2\mathbf{I}_N)
 \]</span></p>
-<p>Where: - <span class="math inline">\(\mathbf{0}\)</span> is an <span class="math inline">\(N \times 1\)</span> vector of zeros - <span class="math inline">\(\mathbf{I}_N\)</span> is the <span class="math inline">\(N \times N\)</span> identity matrix - <span class="math inline">\(\sigma^2\)</span> is the common variance parameter</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{0}\)</span> is an <span class="math inline">\(N \times 1\)</span> vector of zeros</li>
+<li><span class="math inline">\(\mathbf{I}_N\)</span> is the <span class="math inline">\(N \times N\)</span> identity matrix</li>
+<li><span class="math inline">\(\sigma^2\)</span> is the common variance parameter</li>
+</ul>
 </section>
 <section id="visualise-simulated-data" class="level1">
 <h1><strong>Visualise Simulated Data</strong></h1>
@@ -344,7 +347,13 @@ window.Quarto = {
 <p><span class="math display">\[
 y_i | \boldsymbol{\beta}, \sigma^2 \sim \mathcal{N}(\mathbf{x}_i\boldsymbol{\beta}, \sigma^2)
 \]</span></p>
-<p>Where: - <span class="math inline">\(y_i\)</span> is the scalar response for observation <span class="math inline">\(i\)</span> - <span class="math inline">\(\mathbf{x}_i\)</span> is the <span class="math inline">\(1 \times P\)</span> row vector of predictors for observation <span class="math inline">\(i\)</span> - <span class="math inline">\(\boldsymbol{\beta}\)</span> is the <span class="math inline">\(P \times 1\)</span> column vector of coefficients - <span class="math inline">\(\sigma^2\)</span> is the scalar variance parameter</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(y_i\)</span> is the scalar response for observation <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\mathbf{x}_i\)</span> is the <span class="math inline">\(1 \times P\)</span> row vector of predictors for observation <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}\)</span> is the <span class="math inline">\(P \times 1\)</span> column vector of coefficients</li>
+<li><span class="math inline">\(\sigma^2\)</span> is the scalar variance parameter</li>
+</ul>
 <p>Given <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span>, and <span class="math inline">\(\sigma^2\)</span>, the likelihood of <span class="math inline">\(\mathbf{Y}\)</span> is:</p>
 <p><span class="math display">\[
 p(\mathbf{Y} | \mathbf{X}, \boldsymbol{\beta}, \sigma^2) = (2\pi\sigma^2)^{-N/2} \exp\left(-\frac{1}{2\sigma^2}(\mathbf{Y} - \mathbf{X}\boldsymbol{\beta})^\top(\mathbf{Y} - \mathbf{X}\boldsymbol{\beta})\right)
@@ -356,12 +365,21 @@ p(\mathbf{Y} | \mathbf{X}, \boldsymbol{\beta}, \sigma^2) = (2\pi\sigma^2)^{-N/2}
 <p><span class="math display">\[
 p(\boldsymbol{\beta} | \sigma^2) = (2\pi\sigma^2)^{-P/2} |\mathbf{A}_0|^{1/2} \exp\left(-\frac{1}{2\sigma^2}(\boldsymbol{\beta} - \boldsymbol{\mu}_0)^\top \mathbf{A}_0 (\boldsymbol{\beta} - \boldsymbol{\mu}_0)\right)
 \]</span></p>
-<p>Parameters: - <span class="math inline">\(\boldsymbol{\mu}_0\)</span>: <span class="math inline">\(P \times 1\)</span> prior mean vector - <span class="math inline">\(\mathbf{A}_0\)</span>: <span class="math inline">\(P \times P\)</span> prior precision matrix - <span class="math inline">\(\sigma^2\)</span>: Scales the covariance matrix (<span class="math inline">\(\sigma^2 \mathbf{A}_0^{-1}\)</span>)</p>
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{\mu}_0\)</span>: <span class="math inline">\(P \times 1\)</span> prior mean vector</li>
+<li><span class="math inline">\(\mathbf{A}_0\)</span>: <span class="math inline">\(P \times P\)</span> prior precision matrix</li>
+<li><span class="math inline">\(\sigma^2\)</span>: Scales the covariance matrix (<span class="math inline">\(\sigma^2 \mathbf{A}_0^{-1}\)</span>)</li>
+</ul>
 <p>We assume the following prior for <span class="math inline">\(\sigma^2\)</span> (Inverse Gamma):</p>
 <p><span class="math display">\[
 p(\sigma^2) = \frac{b_0^{a_0}}{\Gamma(a_0)} (\sigma^2)^{-(a_0 + 1)} \exp\left(-\frac{b_0}{\sigma^2}\right)
 \]</span></p>
-<p>Parameters: - <span class="math inline">\(a_0 &gt; 0\)</span>: Shape parameter - <span class="math inline">\(b_0 &gt; 0\)</span>: Scale parameter</p>
+<p>Parameters:</p>
+<ul>
+<li><span class="math inline">\(a_0 &gt; 0\)</span>: Shape parameter</li>
+<li><span class="math inline">\(b_0 &gt; 0\)</span>: Scale parameter</li>
+</ul>
 <div id="0a8936be" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prior parameters (multivariate normal for beta)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> <span class="dv">3</span>  <span class="co"># number of predictors</span></span>
@@ -682,7 +700,6 @@ b_N &amp;= b_0 + \frac{1}{2}\left(\mathbf{Y}^\top\mathbf{Y} + \boldsymbol{\mu}_0
 
 
 </section>
-</div>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

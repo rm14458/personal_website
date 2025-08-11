@@ -5,34 +5,27 @@ website:
   title: "About"
   navbar:
     left:
-      - text: Linear Models
-        menu:
-        - href: 1_linear_models/20250526_ols_consistency.qmd
-          text: OLS Consistency
-        - href: 1_linear_models/20250527_ols_normality.qmd
-          text: OLS Normality
       - text: Bayesian Statistics
         menu: 
-          - href: 2_bayesian_statistics/20250414_coin_flipping.ipynb
+          - href: 1_bayesian_statistics/20250414_coin_flipping.ipynb
             text: Basics
-          - href: 2_bayesian_statistics/20250410_multivariate_regression.ipynb
+          - href: 1_bayesian_statistics/20250410_multivariate_regression.ipynb
             text: Linear Modelling
-      - href: 3_hierarchical_models/hierarchical_models.qmd
-        text: Hierarchical Models
-      - href: 4_time_series/time_series.qmd
+      - href: 2_time_series/time_series.qmd
         text: Time Series
       - text: Panel Data
         menu: 
-          - href: 5_panel_data/20250417_panel_basics.qmd
+          - href: 3_panel_data/20250417_panel_basics.qmd
             text: Panel Data Basics
-          - href: 5_panel_data/20250424_re_vs_fe.qmd
+          - href: 3_panel_data/20250424_re_vs_fe.qmd
             text: Random Effects vs Fxed Effects
-          - href: 5_panel_data/20250425_re_vs_eb.qmd
+          - href: 3_panel_data/20250425_re_vs_eb.qmd
             text: Random Effects vs Empirical Bayes
-      - href: 6_causal_inference/causal_inference.qmd
-        text: Causal Inference
-      - href: 7_neural_networks/neural_networks.qmd
-        text: Neural Networks
+      - text: Neural Networks
+        menu: 
+          - href: 4_neural_networks/20250611_basic_nn.ipynb
+            text: Simple FFNN
+      - text: Monetary Policy
 
 format:
   html:

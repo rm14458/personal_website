@@ -91,5 +91,32 @@
   },
   "1_linear_models/20250527_ols_normality.qmd": {
     "20250527_ols_normality.html": "ee90d6f6"
+  },
+  "7_neural_networks/20250611_basic_nn.ipynb": {
+    "20250611_basic_nn.html": "2687bdde"
+  },
+  "1_bayesian_statistics/20250410_multivariate_regression.ipynb": {
+    "20250410_multivariate_regression.html": "e66954c9"
+  },
+  "1_bayesian_statistics/20250414_coin_flipping.ipynb": {
+    "20250414_coin_flipping.html": "4869ba33"
+  },
+  "2_hierarchical_models/hierarchical_models.qmd": {
+    "hierarchical_models.html": "59f0e01b"
+  },
+  "3_time_series/time_series.qmd": {
+    "time_series.html": "9c49e4fd"
+  },
+  "4_panel_data/20250417_panel_basics.qmd": {
+    "20250417_panel_basics.html": "c41db086"
+  },
+  "4_panel_data/20250424_re_vs_fe.qmd": {
+    "20250424_re_vs_fe.html": "7fe381b6"
+  },
+  "4_panel_data/20250425_re_vs_eb.qmd": {
+    "20250425_re_vs_eb.html": "1eabeb22"
+  },
+  "5_neural_networks/20250611_basic_nn.ipynb": {
+    "20250611_basic_nn.html": "ef88901b"
   }
 }

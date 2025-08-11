@@ -214,10 +214,17 @@ window.Quarto = {
     <a class="nav-link" href="../6_causal_inference/causal_inference.html"> 
 <span class="menu-text">Causal Inference</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../7_neural_networks/neural_networks.html"> 
-<span class="menu-text">Neural Networks</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-neural-networks" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Neural Networks</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-neural-networks">    
+        <li>
+    <a class="dropdown-item" href="../7_neural_networks/20250611_basic_nn.html">
+ <span class="dropdown-text">Simple FFNN</span></a>
   </li>  
+    </ul>
+  </li>
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -534,7 +541,7 @@ Y_{it} = \alpha + X_{it} \beta + \eta_i + \varepsilon_{it}
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/rm14458\.github\.io\/personal_website\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
