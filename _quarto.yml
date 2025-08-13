@@ -21,11 +21,16 @@ website:
             text: Random Effects vs Fxed Effects
           - href: 3_panel_data/20250425_re_vs_eb.qmd
             text: Random Effects vs Empirical Bayes
+      - href: 4_decision_trees/decision_trees.qmd
+        text: Decision Trees
       - text: Neural Networks
         menu: 
-          - href: 4_neural_networks/20250611_basic_nn.ipynb
+          - href: 5_neural_networks/20250611_basic_nn.ipynb
             text: Simple FFNN
-      - text: Monetary Policy
+      - href: 6_energy_demand_forecasting/energy_demand_forecasting.qmd
+        text: Energy Demand Forecasting
+      - href: 7_monetary_policy/monetary_policy.qmd
+        text: Monetary Policy
 
 format:
   html:

@@ -118,5 +118,20 @@
   },
   "5_neural_networks/20250611_basic_nn.ipynb": {
     "20250611_basic_nn.html": "ef88901b"
+  },
+  "2_time_series/time_series.qmd": {
+    "time_series.html": "6ebbfcc2"
+  },
+  "3_panel_data/20250417_panel_basics.qmd": {
+    "20250417_panel_basics.html": "c67db9f3"
+  },
+  "3_panel_data/20250424_re_vs_fe.qmd": {
+    "20250424_re_vs_fe.html": "f07f0b6b"
+  },
+  "3_panel_data/20250425_re_vs_eb.qmd": {
+    "20250425_re_vs_eb.html": "8332491a"
+  },
+  "4_neural_networks/20250611_basic_nn.ipynb": {
+    "20250611_basic_nn.html": "64a44033"
   }
 }
